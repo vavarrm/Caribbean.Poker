@@ -18,45 +18,31 @@ class MainPage extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index()
+	public function __construct()
 	{
-		
-		$this->smarty->assign(array(
-			'content'	=>'MainPage/index.tpl',
-			'Controller'			=>__CLASS__,
+		parent::__construct();
+		$this->load->library(array(
+			'MyCaribbeanPoker'	=> 'game'
 		));
-		$this->smarty->display('shared/frame.tpl');
 	}
-	
-	public function table()
+	public function CaribbeanPokerDemo()
 	{
-		$this->smarty->assign(array(
-			'content'	=>'MainPage/table.tpl',
-			'Controller'			=>__CLASS__,
-		));
-		$this->smarty->display('shared/frame.tpl');
-	}
-	
-	public function handCardLog()
-	{
-		$position = array(
-			'BTN' =>'BTN',
-			'SB' =>'SB',
-			'BB' =>'BB',
-			'EP' =>'EP',
-			'MP5' =>'MP',
-			'MP4' =>'MP',
-			'MP3' =>'MP',
-			'MP2' =>'MP',
-			'MP1' =>'MP',
-			'HJ' =>'HJ',
-			'CO' =>'CO',
-		);
-		$this->smarty->assign(array(
-			'content'	=>'MainPage/handCardLog.tpl',
-			'position'	=>$position,
-			'Controller'			=>__CLASS__,
-		));
-		$this->smarty->display('shared/frame.tpl');
+		for($i=1;$i<=10;$i++)
+		{
+			$output = $this->game->start();
+			$output['player'] = array(
+				's_1',
+				'h_3',
+				'd_12',
+				'c_12',
+				's_8',
+			);
+			$player_point = $this->game->getCardPoint($output['player']);
+			// echo $player_point;
+			var_dump($player_point);
+			// echo "<br>";
+			var_dump($output['player']);
+			echo "<hr>";
+		}
 	}
 }

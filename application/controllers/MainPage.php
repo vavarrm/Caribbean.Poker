@@ -24,25 +24,85 @@ class MainPage extends CI_Controller {
 		$this->load->library(array(
 			'MyCaribbeanPoker'	=> 'game'
 		));
+		
+		$this->load->model('caribbeanPoker_Model');
 	}
-	public function CaribbeanPokerDemo()
+	public function CaribbeanPokerDemo($run=10)
 	{
-		for($i=1;$i<=10;$i++)
+		$bet = 5;
+		$playPoint =1000000;
+		$winlose = 0;
+		$double = 0;
+		$winner ='';
+		$odds = 1;
+		$double = 0;
+		for($i=1;$i<=$run;$i++)
 		{
 			$output = $this->game->start();
-			$output['player'] = array(
-				's_1',
-				'h_3',
-				'd_12',
-				'c_12',
-				's_8',
-			);
 			$player_point = $this->game->getCardPoint($output['player']);
-			// echo $player_point;
-			var_dump($player_point);
-			// echo "<br>";
-			var_dump($output['player']);
+			$banker_point = $this->game->getCardPoint($output['banker']);
+			echo  'player bet'.$bet;
+			echo "<br>";
+			echo 'banker top card：'.$output['banker'][4];
+			echo "<br>";
+			echo 'banker：'.join('&nbsp; &nbsp; ' , $output['banker'])."&nbsp;&nbsp; point：".$banker_point['point']."&nbsp;&nbsp; crad：".$banker_point['pokerOutput'];
+			echo "<br>";
+			echo 'player：'.join('&nbsp; &nbsp; ' , $output['player'])."&nbsp;&nbsp; point：".$player_point['point']."&nbsp;&nbsp; crad：".$player_point['pokerOutput'];
+			if($player_point['point'] >$playPoint)
+			{
+				echo "<br>";
+				$double = $bet*2;
+				echo "Double :".$double;
+				
+				if($banker_point['point'] >= 153000)
+				{
+					// echo "<br>";
+					
+					if($player_point['point'] > $banker_point['point'])
+					{
+						$winner  ="player";
+						$odds = $this->game->getOdds($player_point['point']);
+						$winlose = $double*$odds+$bet;
+					}elseif($player_point['point'] < $banker_point['point'])
+					{
+						$winner  ="banker";
+						$winlose =-1*($double+$bet);
+					}else{
+						$winner  ="tie";
+					}
+				}else
+				{
+					$winner  ="player";
+					$winlose = $bet*$odds ;
+				}
+			}else
+			{
+				$winner  ="banker";
+				$winlose = -1*$bet;
+			}
+			echo "<br>";
+			echo "winner:".$winner;
+			echo "<br>";
+			echo "winlose :".$winlose;
+			$save =array(
+				'banker' =>array(
+					'hand_card' =>serialize($output['banker']) ,
+					'card_style'=>$banker_point['pokerOutput'],
+					'card_point'=>$banker_point['point']
+				),
+				'player' =>array(
+					'hand_card' =>serialize($output['player']) ,
+					'card_style'=>$player_point['pokerOutput'],
+					'card_point'=>$player_point['point']
+				),
+				'bet'	=>$bet,
+				'winner'	=>$winner,
+				'winlose'	=>$winlose,
+				'odds'		=>$odds,
+				'double'	=>$double
+			);
 			echo "<hr>";
+			$this->caribbeanPoker_Model->save($save);
 		}
 	}
 }

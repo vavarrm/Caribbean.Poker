@@ -29,13 +29,39 @@
 			return $output;
 		}
 		
+		public function getOdds($point)
+		{
+			$odds = 1;
+			if($point >= 9000000)
+			{
+				$odds  =100;
+			}elseif($point>=8000000 && $point<9000000){
+				$odds  =50;
+			}elseif($point>=7000000 && $point<8000000){
+				$odds  =20;
+			}elseif($point>=7000000 && $point<8000000){
+				$odds  =7;
+			}elseif($point>=6000000 && $point<7000000){
+				$odds  =5;
+			}elseif($point>=5000000 && $point<6000000){
+				$odds  =4;
+			}elseif($point>=4000000 && $point<5000000){
+				$odds  =3;
+			}elseif($point>=2000000 && $point<3000000){
+				$odds  =2;
+			}
+			
+			return $odds ;
+			
+		}
+		
 		public function getCardPoint($ary)
 		{
 			$flush = false;
 			$straight =false; 
 			$point = 0;
 			$pokerOutput='';
-			
+			$AK=0;
 			// $m
 			
 			$cardAry =array(
@@ -91,7 +117,6 @@
 			}
 		
 			//判斷是否為順子
-			sort($number);
 			$straightStr ="A23456789TJQKATJQK";
 			$straightTemp = '';
 			foreach($number as $value)
@@ -109,10 +134,10 @@
 			if($flush ==true && $straight ==true)
 			{
 				$pokerOutput ='Straight Flush';
-				$point = 800;
+				$point = 8000000;
 				if($straightTemp=="ATJQK")
 				{
-					$point +=100;
+					$point +=1000000;
 				}else{
 					$flush_straight_max =$number_max;
 					$point+=$flush_straight_max;
@@ -123,13 +148,11 @@
 			}
 			
 			//判斷是否為鐵支
-			// rsort($pair_ary);
-			// var_dump($pair_ary);
 			$same_count = max($pair_ary);
 			$same_max = array_keys($pair_ary, max($pair_ary));
 			if( $same_count  == 4)
 			{
-				$point = 700;
+				$point = 7000000;
 				$add = $addPointAry[$same_max[0]];
 				$point+=$add;
 				$four_of = $cardAry[$same_max[0]];
@@ -142,9 +165,7 @@
 			//判斷葫蘆
 			if( $same_count  == 3 && count($pair_ary) == 2)
 			{
-				// echo $addPointAry[$same_max[1]];
-				// var_dump($same_max);
-				$point = 600;
+				$point = 6000000;
 				$add = $addPointAry[$same_max[0]];
 				$point+=$add;
 				$full_house_pair_point = array_keys($pair_ary, '2');
@@ -159,7 +180,7 @@
 			//同花
 			if($flush ==true)
 			{
-				$point = 500;
+				$point = 5000000;
 				
 				if(in_array('1', $number))
 				{
@@ -179,7 +200,7 @@
 			//順子
 			if($straight ==true)
 			{
-				$point = 400;
+				$point = 4000000;
 				
 				if($straightTemp=="ATJQK")
 				{
@@ -198,7 +219,7 @@
 			//三條
 			if( $same_count  == 3)
 			{
-				$point = 300;
+				$point = 3000000;
 				$add = $addPointAry[$same_max[0]];
 				$output['point'] = $point+$add;
 				$set = $cardAry[$same_max[0]];
@@ -210,41 +231,50 @@
 			if( $same_count  == 2 && count($pair_ary) == 3)
 			{
 				
-				$point = 200;
+				$point = 2000000;
 				$two_pair_ary =array();
 				foreach($pair_ary as $key =>$value)
 				{
 					if($value ==2)
 					{
 						$two_pair_ary[$cardAry[$key]] =  $addPointAry[$key];
+						$two_pair_point[]= $addPointAry[$key];
+					}else{
+						$kicked = $addPointAry[$key];
 					}
-					$add = $addPointAry[$key];
-					$point+=$add;
-					// echo "<hr>";
 				}
-				ksort($two_pair_ary);
+				ksort($two_pair_point);
+				krsort($two_pair_ary);
+
 				$two_pair_ary_str = join('-', array_keys($two_pair_ary));
+				$point +=array_shift($two_pair_point)*10000;
+				$point +=array_shift($two_pair_point)*1000;
+				$point +=$kicked ;
 				$output['point'] = $point;
 				$output['pokerOutput'] = 	$two_pair_ary_str .' Two Pairs';
 				return $output;	
 			}
 			
 			//1對
-		
+			$pair_high = array();
 			if( $same_count  == 2 && count($pair_ary) == 4)
 			{
-				$point = 100;
-				$output['point'] = $point;
+				$point = 1000000;
 				foreach($pair_ary as $key =>$value)
 				{
 					if($value ==2)
 					{
 						$one_pair_ary_str =  $cardAry[$key];
+						$add = $addPointAry[$key]*10000;
+						$point+=$add;
+					}else{
+						$pair_high[] = $addPointAry[$key];
 					}
-					$add = $addPointAry[$key];
-					$point+=$add;
+
 					// echo "<hr>";
 				}
+				rsort($pair_high);
+				$point+=$pair_high[0]*1000+$pair_high[1]*100+$pair_high[2]*100;
 				$output['point'] = $point;
 				$output['pokerOutput'] = 	$one_pair_ary_str .'  Pairs';
 				return $output;	
@@ -252,8 +282,23 @@
 			
 			//高牌
 			
-			var_dump()
-			
+			$point = 0;
+			$output['point'] = $point;
+			$odds = 10000;
+			foreach($number as $key =>$value)
+			{
+				if($value == 1 || $value ==13)
+				{
+					$AK++;
+				}
+				$add = $addPointAry[$value]*$odds;
+				$point+=$add;
+				$odds*=0.1;
+			}
+			$output['point'] = $point;
+			$output['pokerOutput'] = 	'  High card';
+			$outpput['AK']=$AK;
+			return $output;	
 		}
 	}
 ?>

@@ -20,8 +20,10 @@
 					`odds`,
 					`bet`,
 					`double`,
-					`winlose`
+					`winlose`,
+					`play_point`
 				)VALUES(
+					?,
 					?,
 					?,
 					?,
@@ -46,6 +48,7 @@
 				$ary['bet'],
 				$ary['double'],
 				$ary['winlose'],
+				$ary['playPoint'],
 			);
 			$this->db->query($sql, $bind);
 		}

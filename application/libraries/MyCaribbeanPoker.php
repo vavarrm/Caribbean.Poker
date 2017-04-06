@@ -34,21 +34,21 @@
 			$odds = 1;
 			if($point >= 9000000)
 			{
-				$odds  =100;
+				$odds  =100;//皇家同花順
 			}elseif($point>=8000000 && $point<9000000){
-				$odds  =50;
+				$odds  =50;//同花順
 			}elseif($point>=7000000 && $point<8000000){
-				$odds  =20;
-			}elseif($point>=7000000 && $point<8000000){
-				$odds  =7;
+				$odds  =20;//四條
 			}elseif($point>=6000000 && $point<7000000){
-				$odds  =5;
+				$odds  =7;//葫蘆
 			}elseif($point>=5000000 && $point<6000000){
-				$odds  =4;
+				$odds  =5;//同花
 			}elseif($point>=4000000 && $point<5000000){
-				$odds  =3;
+				$odds  =4;//順子
+			}elseif($point>=3000000 && $point<4000000){
+				$odds  =3;//三條
 			}elseif($point>=2000000 && $point<3000000){
-				$odds  =2;
+				$odds  =2;//兩對
 			}
 			
 			return $odds ;
@@ -296,7 +296,7 @@
 				$odds*=0.1;
 			}
 			$output['point'] = $point;
-			$output['pokerOutput'] = 	'  High card';
+			$output['pokerOutput'] = 	'High card';
 			$outpput['AK']=$AK;
 			return $output;	
 		}

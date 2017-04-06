@@ -30,7 +30,8 @@ class MainPage extends CI_Controller {
 	public function CaribbeanPokerDemo($run=10)
 	{
 		$bet = 5;
-		$playPoint =1000000;
+		// $playPoint =1000000;//只打對子
+		$playPoint =154183;//AKJ83
 		$winlose = 0;
 		$double = 0;
 		$winner ='';
@@ -86,12 +87,12 @@ class MainPage extends CI_Controller {
 			echo "winlose :".$winlose;
 			$save =array(
 				'banker' =>array(
-					'hand_card' =>serialize($output['banker']) ,
+					'hand_card' =>join(':',$output['banker']) ,
 					'card_style'=>$banker_point['pokerOutput'],
 					'card_point'=>$banker_point['point']
 				),
 				'player' =>array(
-					'hand_card' =>serialize($output['player']) ,
+					'hand_card' =>join(':',$output['player']) ,
 					'card_style'=>$player_point['pokerOutput'],
 					'card_point'=>$player_point['point']
 				),
@@ -99,7 +100,8 @@ class MainPage extends CI_Controller {
 				'winner'	=>$winner,
 				'winlose'	=>$winlose,
 				'odds'		=>$odds,
-				'double'	=>$double
+				'double'	=>$double,
+				'playPoint'	=>$playPoint
 			);
 			echo "<hr>";
 			$this->caribbeanPoker_Model->save($save);

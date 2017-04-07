@@ -31,7 +31,7 @@ class MainPage extends CI_Controller {
 	{
 		set_time_limit(60*10);
 		ini_set('memory_limit', '256M');
-		$bet = 100;
+		$bet = 1;
 		// $playPoint =1000000;//只打對子
 		$playPoint =154183;//AKJ83
 		for($i=1;$i<=$run;$i++)
@@ -42,18 +42,18 @@ class MainPage extends CI_Controller {
 			$winner ='';
 			$output = $this->game->start();
 			// $output['player'] = array(
-				// 'h_5',
-				// 'd_8',
-				// 'h_4',
-				// 's_9',
-				// 'c_4',
+				// 'h_1',
+				// 'd_13',
+				// 'h_12',
+				// 's_11',
+				// 'c_10',
 			// );
 			// $output['banker'] = array(
-				// 'd_4',
-				// 'h_9',
-				// 'c_6',
+				// 'd_1',
+				// 'h_2',
+				// 'c_3',
 				// 's_4',
-				// 'h_7',
+				// 'h_5',
 			// );
 			$player_point = $this->game->getCardPoint($output['player']);
 			$banker_point = $this->game->getCardPoint($output['banker']);
@@ -69,16 +69,19 @@ class MainPage extends CI_Controller {
 				// echo "<br>";
 				$double = $bet*2;
 				// echo "Double :".$double;
-				
-				if($banker_point['point'] >= 153000)
+				// echo "D";
+				// var_dump($banker_point);
+				if($banker_point['AK'] >= 2 || $banker_point['point'] >=2000000)
 				{
 					// echo "<br>";
+					// echo "D";
 					
 					if($player_point['point'] > $banker_point['point'])
 					{
 						$winner  ="player";
 						$odds = $this->game->getOdds($player_point['point']);
 						// echo $odds."<br>";
+						// echo $double;
 						$winlose = $double*$odds+$bet;
 					}elseif($player_point['point'] < $banker_point['point'])
 					{

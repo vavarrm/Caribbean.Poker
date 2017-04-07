@@ -26,6 +26,7 @@
 				$card = array_shift( $this->card);
 				$output['banker'][] = $card;
 			}
+			// var_dump($this->card);
 			return $output;
 		}
 		
@@ -122,12 +123,14 @@
 			$straightStr ="A23456789TJQKATJQK";
 			$straightTemp = '';
 			sort($number);
+			// var_dump($number);
 			foreach($number as $value)
 			{
 				$straightTemp.= $cardAry[$value];
 			}
 			
-		;
+			// echo $straightTemp ;
+			// echo "<br>";
 			
 			if (strstr($straightStr,$straightTemp)) 
 			{
@@ -216,7 +219,7 @@
 				if($straightTemp=="ATJQK")
 				{
 					$add =14;
-					$straigh_max_min ='A'.'-'.$cardAry[$number_min];
+					$straigh_max_min ='A-T';
 				}else{
 					$add = $addPointAry[$number_max];
 					$straigh_max_min =$cardAry[$number_max].'-'.$cardAry[$number_min];
@@ -300,7 +303,7 @@
 			$point = 0;
 			$output['point'] = $point;
 			$odds = 10000;
-
+			$AK =0;
 			if($number[0] =='1')
 			{
 				array_shift($number);
@@ -312,6 +315,7 @@
 			// var_dump($number);
 			foreach($number as $key =>$value)
 			{
+				// echo $key;
 				if($value == 1 || $value ==13)
 				{
 					$AK++;
@@ -323,7 +327,7 @@
 			$output['point'] = $point;
 			$output['pokerOutput'] = 	'High card';
 			$output['type'] = 'High card';
-			$outpput['AK']=$AK;
+			$output['AK']=$AK;
 			return $output;	
 		}
 	}

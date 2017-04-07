@@ -64,7 +64,7 @@ class MainPage extends CI_Controller {
 			// echo 'banker：'.join('&nbsp; &nbsp; ' , $output['banker'])."&nbsp;&nbsp; point：".$banker_point['point']."&nbsp;&nbsp; crad：".$banker_point['pokerOutput'];
 			// echo "<br>";
 			// echo 'player：'.join('&nbsp; &nbsp; ' , $output['player'])."&nbsp;&nbsp; point：".$player_point['point']."&nbsp;&nbsp; crad：".$player_point['pokerOutput'];
-			if($player_point['point'] >$playPoint)
+			if($player_point['point'] >=$playPoint)
 			{
 				// echo "<br>";
 				$double = $bet*2;
@@ -92,7 +92,8 @@ class MainPage extends CI_Controller {
 				}else
 				{
 					$winner  ="player";
-					$winlose = $bet*$odds ;
+					$double = 0;
+					$winlose = $bet ;
 				}
 			}else
 			{

@@ -31,7 +31,7 @@ class MainPage extends CI_Controller {
 	{
 		set_time_limit(60*10);
 		ini_set('memory_limit', '256M');
-		$bet = 5;
+		$bet = 100;
 		// $playPoint =1000000;//只打對子
 		$playPoint =154183;//AKJ83
 		for($i=1;$i<=$run;$i++)

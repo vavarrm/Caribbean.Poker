@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-04-07 11:11:12
+-- Generation Time: 2017-04-07 12:53:58
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -26,6 +26,17 @@ DELIMITER $$
 --
 -- 存储过程
 --
+DROP PROCEDURE IF EXISTS `output_rate`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `output_rate`()
+    NO SQL
+BEGIN
+DECLARE  total INT;
+SET total = (SELECT COUNT(*) FROM  `caribbean_poker_income`);
+SELECT * FROM (
+SELECT count(*) AS style_count ,total, ROUND(count(*)/total *100,3) AS pr, player_card_type FROM `caribbean_poker_income` GROUP BY `player_card_type`)
+a ORDER BY pr ;
+END$$
+
 DROP PROCEDURE IF EXISTS `win`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `win`()
     NO SQL
@@ -54,7 +65,7 @@ CREATE TEMPORARY TABLE temp1 (
     WHILE i > 0 DO
     truncate temp1;
     	INSERT INTO temp1(winlose, bet, `double`)
-    	SELECT  winlose ,bet, `double` FROM `caribbean_poker_income` ORDER BY RAND() LIMIT 0,1000;
+    	SELECT  winlose ,bet, `double` FROM `caribbean_poker_income` ORDER BY RAND() ;
     	SET i = i - 1;
         
     
@@ -62,11 +73,10 @@ CREATE TEMPORARY TABLE temp1 (
     
     SET bet_total = (SELECT SUM(bet) FROM temp1);
     SET double_total = (SELECT SUM(`double`) FROM temp1);
-    select  double_total;
     INSERT INTO temp2 (winlose_total, bet_total,  bet_lose_rate, total_lose_rate,  double_total) VALUES(winlose_total, bet_total, winlose_total/bet_total, winlose_total/(bet_total+double_total),   double_total);
     END WHILE;
-	SELECT * , ROUND(t.bet_lose_rate*100,3) AS bet_lose_rate_pr , ROUND(t.total_lose_rate*100,3) AS total_lose_rate_pr FROM temp2 AS t ;
-    SELECT * FROM temp1;
+	SELECT *  FROM temp2 AS t ;
+    
 END$$
 
 DELIMITER ;
@@ -95,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `caribbean_poker_income` (
   `winlose` int(11) NOT NULL,
   `play_point` int(11) NOT NULL DEFAULT '1000000',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=65296 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

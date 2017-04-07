@@ -71,7 +71,7 @@ class MainPage extends CI_Controller {
 				// echo "Double :".$double;
 				// echo "D";
 				// var_dump($banker_point);
-				if($banker_point['AK'] >= 2 || $banker_point['point'] >=2000000)
+				if( $banker_point['point'] >=2000000 || $banker_point['AK'] >= 2)
 				{
 					// echo "<br>";
 					// echo "D";

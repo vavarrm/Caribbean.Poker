@@ -18,6 +18,9 @@ class MainPage extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	 public function index()
+	 {
+	 }
 	public function __construct()
 	{
 		parent::__construct();
@@ -40,6 +43,20 @@ class MainPage extends CI_Controller {
 		for($i=1;$i<=$run;$i++)
 		{
 			$output = $this->game->start();
+			// $output['banker']= array(
+				// 's_1',
+				// 'h_13',
+				// 'd_2',
+				// 'c_4',
+				// 's_6',
+			// );
+			// $output['player']= array(
+				// 's_1',
+				// 'h_1',
+				// 'd_2',
+				// 'c_4',
+				// 's_6',
+			// );
 			$player_point = $this->game->getCardPoint($output['player']);
 			$banker_point = $this->game->getCardPoint($output['banker']);
 			echo  'player bet'.$bet;
@@ -63,6 +80,7 @@ class MainPage extends CI_Controller {
 					{
 						$winner  ="player";
 						$odds = $this->game->getOdds($player_point['point']);
+						// echo $bet;
 						$winlose = $double*$odds+$bet;
 					}elseif($player_point['point'] < $banker_point['point'])
 					{
@@ -83,6 +101,8 @@ class MainPage extends CI_Controller {
 			}
 			echo "<br>";
 			echo "winner:".$winner;
+			echo "<br>";
+			echo "odds:".$odds;
 			echo "<br>";
 			echo "winlose :".$winlose;
 			$save =array(

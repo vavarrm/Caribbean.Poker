@@ -20,6 +20,8 @@
 		//基本洗牌法
 		public function basicShuffle()
 		{
+			// shuffle($this->card);
+			// shuffle($this->card);
 			shuffle($this->card);
 			
 			for($i=1;$i<=3;$i++)
@@ -40,6 +42,7 @@
 		//牌初始化
 		public function  initCard($num = 1)
 		{
+			$this->card = array();
 			for ($i=0 ;$i<$num ;$i++)
 			{
 				$k = 0;

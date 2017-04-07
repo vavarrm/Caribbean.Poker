@@ -86,7 +86,7 @@ class MainPage extends CI_Controller {
 						$winlose =-1*($double+$bet);
 					}else{
 						$winner  ="tie";
-						echo "d";
+						// echo "d";
 						$winlose=0;
 					}
 				}else
@@ -135,8 +135,8 @@ class MainPage extends CI_Controller {
 				'double'			=>$double,
 				'winlose'			=>$winlose,
 				'play_point'		=>$playPoint,
-				'player_card_type'	=>$banker_point['type'],
-				'banker_card_type'	=>$player_point['type'],
+				'player_card_type'	=>$player_point['type'],
+				'banker_card_type'	=>$banker_point['type'],
 			);
 			// echo $run%20000;
 			// echo "<br>";

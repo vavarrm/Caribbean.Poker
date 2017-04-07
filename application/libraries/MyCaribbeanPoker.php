@@ -14,9 +14,7 @@
 		{
 			$output = array();
 			$this->initCard($this->cardNums);
-			var_dump( $this->card);
 			$this->basicShuffle();
-			var_dump( $this->card);
 			for($i=1 ;$i<=5;$i++)
 			{
 				$card = array_shift( $this->card);
@@ -28,8 +26,6 @@
 				$card = array_shift( $this->card);
 				$output['banker'][] = $card;
 			}
-			// rsort($this->card);
-			
 			return $output;
 		}
 		
@@ -171,7 +167,7 @@
 				$output['point'] = $point;
 				$output['pokerOutput'] = 	$pokerOutput;
 				$output['type'] = 'Four of a Kind';
-				var_dump($output);
+				// var_dump($output);
 				return $output;
 			}
 			

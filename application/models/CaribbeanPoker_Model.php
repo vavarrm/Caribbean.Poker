@@ -7,6 +7,11 @@
 			$this->load->database();
 		}
 		
+		public function savebatch($ary)
+		{
+			$this->db->insert_batch('caribbean_poker_income', $ary); 
+		}
+		
 		public  function save($ary)
 		{
 			$sql ="INSERT INTO caribbean_poker_income (
@@ -50,7 +55,7 @@
 				$ary['winlose'],
 				$ary['playPoint'],
 			);
-			$this->db->query($sql, $bind);
+			// $this->db->query($sql, $bind);
 		}
 
 	}

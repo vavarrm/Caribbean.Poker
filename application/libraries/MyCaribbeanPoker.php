@@ -14,7 +14,9 @@
 		{
 			$output = array();
 			$this->initCard($this->cardNums);
+			var_dump( $this->card);
 			$this->basicShuffle();
+			var_dump( $this->card);
 			for($i=1 ;$i<=5;$i++)
 			{
 				$card = array_shift( $this->card);
@@ -26,6 +28,8 @@
 				$card = array_shift( $this->card);
 				$output['banker'][] = $card;
 			}
+			// rsort($this->card);
+			
 			return $output;
 		}
 		
@@ -101,6 +105,8 @@
 				return false ;
 			}
 			
+			$number = array();
+			$pair_ary = array();
 			foreach($ary as $value)
 			{
 				$temp = explode('_', $value);
@@ -119,12 +125,14 @@
 			//判斷是否為順子
 			$straightStr ="A23456789TJQKATJQK";
 			$straightTemp = '';
+			sort($number);
 			foreach($number as $value)
 			{
 				$straightTemp.= $cardAry[$value];
 			}
 			
-
+		;
+			
 			if (strstr($straightStr,$straightTemp)) 
 			{
 			  	$straight = true;
@@ -137,12 +145,15 @@
 				$point = 8000000;
 				if($straightTemp=="ATJQK")
 				{
+					$type ="Royal Straight Flush"; 
 					$point +=1000000;
 				}else{
 					$flush_straight_max =$number_max;
 					$point+=$flush_straight_max;
+					$type ="Straight Flush"; 
 				}
 				$output['point'] = $point;
+				$output['type'] = $type;
 				$output['pokerOutput'] = 	$pokerOutput;
 				return $output;
 			}
@@ -159,6 +170,8 @@
 				$pokerOutput ='Four of a Kind of '.$four_of;
 				$output['point'] = $point;
 				$output['pokerOutput'] = 	$pokerOutput;
+				$output['type'] = 'Four of a Kind';
+				var_dump($output);
 				return $output;
 			}
 			
@@ -174,6 +187,7 @@
 				$full_house_pair = $cardAry[$full_house_pair_point[0]];
 				$output['point'] = $point;
 				$output['pokerOutput'] = 	$full_house_set.'-'.$full_house_pair.' Full house';
+				$output['type'] = 'Full house';
 				return $output;
 			}
 			
@@ -193,6 +207,7 @@
 				$point+=$add;
 				$output['point'] = $point;
 				$output['pokerOutput'] = $flush_max.' flush';
+				$output['type'] = 'Flush';
 				return $output;
 			}
 			
@@ -213,6 +228,7 @@
 				$point+=$add;
 				$output['point'] = $point;
 				$output['pokerOutput'] = $straigh_max_min.' straight';
+				$output['type'] = 'straight';
 				return $output;
 			}
 			
@@ -224,6 +240,7 @@
 				$output['point'] = $point+$add;
 				$set = $cardAry[$same_max[0]];
 				$output['pokerOutput'] = $set.' set';
+				$output['type'] = 'set';
 				return $output;	
 			}
 
@@ -252,6 +269,7 @@
 				$point +=$kicked ;
 				$output['point'] = $point;
 				$output['pokerOutput'] = 	$two_pair_ary_str .' Two Pairs';
+				$output['type'] = 'Two Pairs';
 				return $output;	
 			}
 			
@@ -277,6 +295,7 @@
 				$point+=$pair_high[0]*1000+$pair_high[1]*100+$pair_high[2]*100;
 				$output['point'] = $point;
 				$output['pokerOutput'] = 	$one_pair_ary_str .'  Pairs';
+				$output['type'] = 'Pairs';
 				return $output;	
 			}
 			
@@ -285,6 +304,16 @@
 			$point = 0;
 			$output['point'] = $point;
 			$odds = 10000;
+
+			if($number[0] =='1')
+			{
+				array_shift($number);
+				rsort($number);
+				array_unshift($number, '1');
+			}else{
+				rsort($number);
+			}
+			// var_dump($number);
 			foreach($number as $key =>$value)
 			{
 				if($value == 1 || $value ==13)
@@ -297,6 +326,7 @@
 			}
 			$output['point'] = $point;
 			$output['pokerOutput'] = 	'High card';
+			$output['type'] = 'High card';
 			$outpput['AK']=$AK;
 			return $output;	
 		}

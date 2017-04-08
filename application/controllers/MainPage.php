@@ -41,20 +41,20 @@ class MainPage extends CI_Controller {
 			$winlose = 0;
 			$winner ='';
 			$output = $this->game->start();
-			$output['player'] = array(
-				's_2',
-				's_3',
-				's_4',
-				's_5',
-				's_6',
-			);
-			$output['banker'] = array(
-				'h_9',
-				'h_10',
-				'h_11',
-				'5_12',
-				'h_13',
-			);
+			// $output['player'] = array(
+				// 's_2',
+				// 's_3',
+				// 's_4',
+				// 's_5',
+				// 's_6',
+			// );
+			// $output['banker'] = array(
+				// 'h_9',
+				// 'h_10',
+				// 'h_11',
+				// '5_12',
+				// 'h_13',
+			// );
 			$player_point = $this->game->getCardPoint($output['player']);
 			$banker_point = $this->game->getCardPoint($output['banker']);
 			// echo  'player bet'.$bet;

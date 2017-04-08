@@ -22,8 +22,12 @@
 		{
 			// shuffle($this->card);
 			// shuffle($this->card);
+			// srand(mktime()*rand(0,9999));
 			shuffle($this->card);
-			
+			// shuffle($this->card);
+			// shuffle($this->card);
+			// rsort($this->card);
+			// var_dump($this->card);
 			for($i=1;$i<=3;$i++)
 			{
 				$a = array_slice($this->card, 0 , 26);
@@ -36,6 +40,9 @@
 				}
 					$this->card = $temp;
 			}
+			// shuffle($this->card);
+			// rsort($this->card);
+			// var_dump($this->card);
 		}
 		
 		

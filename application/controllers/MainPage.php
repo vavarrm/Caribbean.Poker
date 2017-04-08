@@ -33,7 +33,7 @@ class MainPage extends CI_Controller {
 		ini_set('memory_limit', '256M');
 		$bet = 1;
 		// $playPoint =1000000;//只打對子
-		$playPoint =154183;//AKJ83
+		$playPoint =141311083;//AKJ83
 		for($i=1;$i<=$run;$i++)
 		{
 			$odds = 1;
@@ -41,20 +41,20 @@ class MainPage extends CI_Controller {
 			$winlose = 0;
 			$winner ='';
 			$output = $this->game->start();
-			// $output['player'] = array(
-				// 'h_1',
-				// 'd_13',
-				// 'h_12',
-				// 's_11',
-				// 'c_10',
-			// );
-			// $output['banker'] = array(
-				// 'd_1',
-				// 'h_2',
-				// 'c_3',
-				// 's_4',
-				// 'h_5',
-			// );
+			$output['player'] = array(
+				's_2',
+				's_3',
+				's_4',
+				's_5',
+				's_6',
+			);
+			$output['banker'] = array(
+				'h_9',
+				'h_10',
+				'h_11',
+				'5_12',
+				'h_13',
+			);
 			$player_point = $this->game->getCardPoint($output['player']);
 			$banker_point = $this->game->getCardPoint($output['banker']);
 			// echo  'player bet'.$bet;
@@ -64,6 +64,7 @@ class MainPage extends CI_Controller {
 			// echo 'banker：'.join('&nbsp; &nbsp; ' , $output['banker'])."&nbsp;&nbsp; point：".$banker_point['point']."&nbsp;&nbsp; crad：".$banker_point['pokerOutput'];
 			// echo "<br>";
 			// echo 'player：'.join('&nbsp; &nbsp; ' , $output['player'])."&nbsp;&nbsp; point：".$player_point['point']."&nbsp;&nbsp; crad：".$player_point['pokerOutput'];
+			// echo $this->game->zeor_number;
 			if($player_point['point'] >=$playPoint)
 			{
 				// echo "<br>";
@@ -71,7 +72,11 @@ class MainPage extends CI_Controller {
 				// echo "Double :".$double;
 				// echo "D";
 				// var_dump($banker_point);
-				if( $banker_point['point'] >=1000000 || $banker_point['AK'] >= 2)
+				// echo "<br>";
+				// echo 1*$this->game->zeor_number;
+				
+				// if( $banker_point['point'] >=1*$this->game->zeor_number || $banker_point['AK'] >= 2)
+				if( $banker_point['point'] >=141304032)
 				{
 					// echo "<br>";
 					// echo "D";

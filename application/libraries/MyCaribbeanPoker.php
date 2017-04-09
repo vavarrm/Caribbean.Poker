@@ -9,26 +9,61 @@
 		{
 			parent::__construct();
 			$this->zeor_number =1000000000;
+			$this->version =0;
 		}
 		
 		public function start()
 		{
-			$output = array();
-			$this->initCard($this->cardNums);
-			$this->basicShuffle();
-			for($i=1 ;$i<=5;$i++)
-			{
-				$card = array_shift( $this->card);
-				$output['player'][] = $card;
-			}
 			
-			for($i=1 ;$i<=5;$i++)
-			{
-				$card = array_shift( $this->card);
-				$output['banker'][] = $card;
-			}
+			// echo 	$player_card;
+			// $output = array();
+			$this->initCard($this->cardNums);
+			$player_card = $this->getRandStyle();
+			$player_card ='hc';
+			$banker_card ='hc';
+			$output['player'] =$this->makeCard($player_card);
+			$output['banker'] = $this->makeCard($banker_card);
+			// $this->basicShuffle();
+			// for($i=1 ;$i<=5;$i++)
+			// {
+				// $card = array_shift( $this->card);
+				// $output['player'][] = $card;
+			// }
+			
+			// for($i=1 ;$i<=5;$i++)
+			// {
+				// $card = array_shift( $this->card);
+				// $output['banker'][] = $card;
+			// }
 			// var_dump($this->card);
 			return $output;
+		}
+		
+		public function makeCard($style)
+		{
+			$output = array();
+			switch($style)
+			{
+				case 'hc':
+					$rand_keys = array_rand($this->card, 5);
+					
+					for($i=0 ;$i<=4 ;$i++)
+					{
+						$output[] =$this->card[$rand_keys[$i]];
+						unset($this->card[$rand_keys[$i]]);
+					}
+					// var_dump($this->card);
+				break;
+			}
+			return $output;
+		}
+		
+		public function getRandStyle()
+		{
+			$max =  count($this->rand_table)-1;
+			shuffle($this->rand_table);
+			$key = rand(0,$max);
+			return $this->rand_table[$key];
 		}
 		
 		public function getOdds($point)
@@ -141,16 +176,21 @@
 			//判斷是否同花順，同花打不打的過葫蘆house
 			if($flush ==true && $straight ==true)
 			{
-				$pokerOutput ='Straight Flush';
+				
 				$point = 8*$this->zeor_number;
+				// echo $straightTemp;
+				// echo "<br>";
 				if($straightTemp=="ATJQK")
 				{
-					$type ="Royal Straight Flush"; 
-					$point +=500000000;
+					// echo "D";
+					$type ="Royal Straight Flush";
+					$pokerOutput ='Royal Straight Flush';					
+					$point +=$this->zeor_number;
 				}else{
 					$flush_straight_max =$number_max;
 					$point+=$flush_straight_max;
 					$type ="Straight Flush"; 
+					$pokerOutput ='Straight Flush';
 				}
 				$output['point'] = $point;
 				$output['type'] = $type;

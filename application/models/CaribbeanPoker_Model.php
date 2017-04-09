@@ -5,6 +5,7 @@
 		{
 			parent::__construct();
 			$this->load->database();
+			
 		}
 		
 		public function savebatch($ary)

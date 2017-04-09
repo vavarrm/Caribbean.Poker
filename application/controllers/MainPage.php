@@ -27,10 +27,10 @@ class MainPage extends CI_Controller {
 		
 		$this->load->model('caribbeanPoker_Model');
 	}
-	public function CaribbeanPokerDemo($run=10)
+	public function CaribbeanPokerDemo($run=1)
 	{
-		set_time_limit(60*10);
-		ini_set('memory_limit', '256M');
+		set_time_limit(60*ˊ60);
+		ini_set('memory_limit', '512M');
 		$bet = 1;
 		// $playPoint =1000000;//只打對子
 		$playPoint =141311083;//AKJ83
@@ -41,12 +41,13 @@ class MainPage extends CI_Controller {
 			$winlose = 0;
 			$winner ='';
 			$output = $this->game->start();
+			// var_dump($output['player']);
 			// $output['player'] = array(
-				// 's_2',
-				// 's_3',
-				// 's_4',
-				// 's_5',
-				// 's_6',
+				// 's_10',
+				// 's_11',
+				// 's_12',
+				// 's_13',
+				// 's_1',
 			// );
 			// $output['banker'] = array(
 				// 'h_9',
@@ -146,6 +147,7 @@ class MainPage extends CI_Controller {
 				'play_point'		=>$playPoint,
 				'player_card_type'	=>$player_point['type'],
 				'banker_card_type'	=>$banker_point['type'],
+				'version'			=>$this->game->version
 			);
 			// echo $run%20000;
 			// echo "<br>";

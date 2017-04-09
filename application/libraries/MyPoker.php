@@ -14,6 +14,31 @@
 				'd',
 			);
 
+			$pr = array(
+				'sf'	=>15,
+				'fk'	=>240,
+				'fh'	=>1440,
+				'fl'	=>1970,
+				'st'	=>3920,
+				'tk'	=>21100,
+				'tp'	=>47500,
+				'op'	=>422600,
+				'hc'	=>501200,
+			);
+			$total = 0;
+			$this->rand_table = array();
+			foreach($pr as $key=> $value)
+			{	
+				for($i=1;$i<=$value;$i++)
+				{
+					$this->rand_table[] = $key;
+				}
+				
+			}
+			
+
+			// var_dump($rand_table);
+			
 		}
 		
 		

@@ -10,6 +10,7 @@
 			parent::__construct();
 			$this->zeor_number =1000000000;
 			$this->version =0;
+
 		}
 		
 		public function start()
@@ -19,7 +20,7 @@
 			// $output = array();
 			$this->initCard($this->cardNums);
 			$player_card = $this->getRandStyle();
-			$player_card ='hc';
+			$player_card ='tp';
 			$banker_card ='hc';
 			$output['player'] =$this->makeCard($player_card);
 			$output['banker'] = $this->makeCard($banker_card);
@@ -41,18 +42,112 @@
 		
 		public function makeCard($style)
 		{
-			$output = array();
+			
 			switch($style)
 			{
 				case 'hc':
-					$rand_keys = array_rand($this->card, 5);
-					
-					for($i=0 ;$i<=4 ;$i++)
-					{
-						$output[] =$this->card[$rand_keys[$i]];
-						unset($this->card[$rand_keys[$i]]);
+					while($stop == false)
+					{	
+						//
+						$output = array();
+						$rand_keys = array_rand($this->card, 5);
+						// var_dump($rand_keys);
+						for($i=0 ;$i<=4 ;$i++)
+						{
+							$output[$rand_keys[$i]] =$this->card[$rand_keys[$i]];
+							unset($this->card[$rand_keys[$i]]);
+						}
+						if(count($output) == 5 )
+						{	
+							$card_info = $this->getCardPoint($output);
+							if($card_info['type'] =="High card")
+							{
+								$stop = true;
+							}else{
+								foreach($output as $key =>$value)
+								{
+				
+									$this->card[$key] = $value;
+								}
+								$output = array();
+
+								
+							}
+						}
 					}
-					// var_dump($this->card);
+				break;
+				case 'op':
+					while($stop == false)
+					{	
+						$output = array();
+						$rand_keys = array_rand($this->card, 5);
+						for($i=0 ;$i<=4 ;$i++)
+						{
+							$output[$rand_keys[$i]] =$this->card[$rand_keys[$i]];
+							unset($this->card[$rand_keys[$i]]);
+						}
+						if(count($output) == 5 )
+						{	
+							$card_info = $this->getCardPoint($output);
+						
+							if($card_info['type'] =="Pairs")
+							{
+								
+								$stop = true;
+							}else{
+								foreach($output as $key =>$value)
+								{
+				
+									$this->card[$key] = $value;
+								}
+								$output = array();
+							}
+						}
+					}
+				break;
+				case 'tp':
+					$addPointAry =$this->addPointAry;
+					$two_pairs_value = array_rand($addPointAry , 2);
+					$temp_value  = array();
+					foreach($two_pairs_value as $key => $value)
+					{	
+						$temp_pool = array();
+						$temp  = $this->suit;
+						$rand_color_index1 = array_rand($temp  , 1);
+						$color1 =  $this->suit[$rand_color_index1];
+						unset($temp[$rand_color_index1]);
+						
+						$rand_color_index2 = array_rand($temp  , 1);
+						$color2 =  $this->suit[$rand_color_index2];
+						unset($temp[$rand_color_index2]);
+						
+						$temp_pool[] =$color1.'_'.$value;
+						$temp_pool[] =$color2.'_'.$value;
+						
+						$unset1 = array_keys($this->card, $temp_pool[0]);
+						$unset2 = array_keys($this->card, $temp_pool[1]);
+						unset($this->card[$unset1[0]]);
+						unset($this->card[$unset2[0]]);
+						
+						$output[] =$temp_pool[0];
+						$output[] =$temp_pool[1];
+						unset($addPointAry[$value]);
+						
+				
+			
+					}
+
+			
+					$two_pairs_tickt = array_rand($addPointAry  , 1);
+					$two_pairs_tickt_color_index = array_rand($this->suit  , 1);
+					$two_pairs_tickt_color =  $this->suit[$two_pairs_tickt_color_index];
+					$output[] = $two_pairs_tickt_color.'_'.$two_pairs_tickt;
+					$unset_index = array_keys($this->card, $two_pairs_tickt_color.'_'.$two_pairs_tickt);
+					unset($this->card[$unset_index[0]]);
+					// echo 
+				break;
+				case 'tk':
+					echo "D";
 				break;
 			}
 			return $output;
@@ -60,10 +155,10 @@
 		
 		public function getRandStyle()
 		{
-			$max =  count($this->rand_table)-1;
-			shuffle($this->rand_table);
-			$key = rand(0,$max);
-			return $this->rand_table[$key];
+			// $max =  count($this->rand_table)-1;
+			// shuffle($this->rand_table);
+			// $key = rand(0,$max);
+			// return $this->rand_table[$key];
 		}
 		
 		public function getOdds($point)
@@ -101,37 +196,9 @@
 			$AK=0;
 			// $m
 			
-			$cardAry =array(
-				'1'		=>'A',
-				'2'		=>'2',
-				'3'		=>'3',
-				'4'		=>'4',
-				'5'		=>'5',
-				'6'		=>'6',
-				'7'		=>'7',
-				'8'		=>'8',
-				'9'		=>'9',
-				'10'	=>'T',
-				'11'	=>'J',
-				'12'	=>'Q',
-				'13'	=>'K',
-			);
+			$cardAry = $this->cardAry;
 			
-			$addPointAry =array(
-				'1'		=>'14',
-				'2'		=>'2',
-				'3'		=>'3',
-				'4'		=>'4',
-				'5'		=>'5',
-				'6'		=>'6',
-				'7'		=>'7',
-				'8'		=>'8',
-				'9'		=>'9',
-				'10'	=>'10',
-				'11'	=>'11',
-				'12'	=>'12',
-				'13'	=>'13',
-			);
+			$addPointAry = $this->addPointAry;
 			
 			if(count($ary) != 5)
 			{

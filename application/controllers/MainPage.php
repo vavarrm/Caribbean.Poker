@@ -20,6 +20,8 @@ class MainPage extends CI_Controller {
 	 */
 	public function __construct()
 	{
+		set_time_limit(60*ˊ60);
+		ini_set('memory_limit', '512M');
 		parent::__construct();
 		$this->load->library(array(
 			'MyCaribbeanPoker'	=> 'game'
@@ -27,10 +29,50 @@ class MainPage extends CI_Controller {
 		
 		$this->load->model('caribbeanPoker_Model');
 	}
-	public function CaribbeanPokerDemo($run=1)
+	
+	public function initProbabilityTable()
 	{
-		set_time_limit(60*ˊ60);
-		ini_set('memory_limit', '512M');
+		
+
+	
+		$this->load->model('caribbeanPoker_Model');
+		$pr = array(
+			'sf'	=>15,
+			'fk'	=>240,
+			'fh'	=>1440,
+			'fl'	=>1970,
+			'st'	=>3920,
+			'tk'	=>21100,
+			'tp'	=>47500,
+			'op'	=>422600,
+			'hc'	=>501215,
+		);
+		$this->caribbeanPoker_Model->delProbabilityTable();
+		foreach($pr as $key=> $value)
+		{	
+			for($i=1;$i<=$value;$i++)
+			{
+
+				$batch[] = array(
+					'card_style'	=>$key
+				);
+				
+				if(count($batch)%200000==0)
+				{
+					$this->caribbeanPoker_Model->addProbabilityTable($batch);
+					unset($batch);
+				}
+			}
+		}
+		
+		if(!empty($batch))
+		{
+			$this->caribbeanPoker_Model->addProbabilityTable($batch);
+		}
+	}
+	
+	public function CaribbeanPokerDemo($run=5)
+	{
 		$bet = 1;
 		// $playPoint =1000000;//只打對子
 		$playPoint =141311083;//AKJ83
@@ -41,7 +83,13 @@ class MainPage extends CI_Controller {
 			$winlose = 0;
 			$winner ='';
 			$output = $this->game->start();
+			// 
+			
 			// var_dump($output['player']);
+			// echo "<hr>";
+			// var_dump($output['banker']);
+			// var_dump($this->game->card);
+			// echo "<hr>";
 			// $output['player'] = array(
 				// 's_10',
 				// 's_11',
@@ -56,8 +104,15 @@ class MainPage extends CI_Controller {
 				// '5_12',
 				// 'h_13',
 			// );
+			// var_dump($output['player']);
 			$player_point = $this->game->getCardPoint($output['player']);
 			$banker_point = $this->game->getCardPoint($output['banker']);
+			
+			// var_dump($player_point);
+			
+			// var_dump($banker_point);
+			// var_dump($this->game->card);
+			// echo "<hr>";
 			// echo  'player bet'.$bet;
 			// echo "<br>";
 			// echo 'banker top card：'.$output['banker'][4];
@@ -154,7 +209,8 @@ class MainPage extends CI_Controller {
 			if($run%20000 ==0)
 			{
 				$this->caribbeanPoker_Model->savebatch($batch);
-				$batch =array();
+				// $batch =array();
+				unset($batch);
 			}
 			// $this->caribbeanPoker_Model->save($save);
 		}

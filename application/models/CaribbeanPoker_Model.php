@@ -13,6 +13,21 @@
 			$this->db->insert_batch('caribbean_poker_income', $ary); 
 		}
 		
+		
+		public function addProbabilityTable($ary)
+		{
+			$this->db->insert_batch('probability_table', $ary); 
+			// $sql ="INSERT INTO probability_table (`card_style`) VALUES(?)";
+			// $bind = array($key);
+			// $this->db->query($sql, $bind);
+		}
+		
+		public function delProbabilityTable()
+		{
+			$sql="TRUNCATE TABLE `probability_table`";
+			$this->db->query($sql, $bind);
+		}
+		
 		public  function save($ary)
 		{
 			$sql ="INSERT INTO caribbean_poker_income (

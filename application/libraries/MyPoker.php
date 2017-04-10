@@ -5,6 +5,7 @@
 		
 		public function __construct()
 		{
+
 			$this->card = array();
 			$this->cardNums = 1;
 			$this->suit = array(
@@ -14,33 +15,49 @@
 				'd',
 			);
 
-			$pr = array(
-				'sf'	=>15,
-				'fk'	=>240,
-				'fh'	=>1440,
-				'fl'	=>1970,
-				'st'	=>3920,
-				'tk'	=>21100,
-				'tp'	=>47500,
-				'op'	=>422600,
-				'hc'	=>501200,
+			$this->cardAry =array(
+				'1'		=>'A',
+				'2'		=>'2',
+				'3'		=>'3',
+				'4'		=>'4',
+				'5'		=>'5',
+				'6'		=>'6',
+				'7'		=>'7',
+				'8'		=>'8',
+				'9'		=>'9',
+				'10'	=>'T',
+				'11'	=>'J',
+				'12'	=>'Q',
+				'13'	=>'K',
 			);
-			$total = 0;
-			$this->rand_table = array();
-			foreach($pr as $key=> $value)
-			{	
-				for($i=1;$i<=$value;$i++)
-				{
-					$this->rand_table[] = $key;
-				}
-				
-			}
 			
-
+			$this->addPointAry =array(
+				'1'		=>'14',
+				'2'		=>'2',
+				'3'		=>'3',
+				'4'		=>'4',
+				'5'		=>'5',
+				'6'		=>'6',
+				'7'		=>'7',
+				'8'		=>'8',
+				'9'		=>'9',
+				'10'	=>'10',
+				'11'	=>'11',
+				'12'	=>'12',
+				'13'	=>'13',
+			);
+			
+			// $this->initProbabilityTable();
 			// var_dump($rand_table);
 			
 		}
 		
+		
+		public function initProbabilityTable()
+		{
+		
+		
+		}
 		
 		//基本洗牌法
 		public function basicShuffle()
@@ -48,23 +65,23 @@
 			// shuffle($this->card);
 			// shuffle($this->card);
 			// srand(mktime()*rand(0,9999));
-			shuffle($this->card);
+			// shuffle($this->card);
 			// shuffle($this->card);
 			// shuffle($this->card);
 			// rsort($this->card);
 			// var_dump($this->card);
-			for($i=1;$i<=3;$i++)
-			{
-				$a = array_slice($this->card, 0 , 26);
-				$b = array_slice($this->card, 26 , 26);
-				$temp = array();
-				foreach($a as $key => $value)
-				{
-					$temp[] = $a[$key];
-					$temp[] = $b[$key];
-				}
-					$this->card = $temp;
-			}
+			// for($i=1;$i<=3;$i++)
+			// {
+				// $a = array_slice($this->card, 0 , 26);
+				// $b = array_slice($this->card, 26 , 26);
+				// $temp = array();
+				// foreach($a as $key => $value)
+				// {
+					// $temp[] = $a[$key];
+					// $temp[] = $b[$key];
+				// }
+					// $this->card = $temp;
+			// }
 			// shuffle($this->card);
 			// rsort($this->card);
 			// var_dump($this->card);

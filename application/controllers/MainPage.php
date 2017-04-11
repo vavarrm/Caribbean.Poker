@@ -57,7 +57,7 @@ class MainPage extends CI_Controller {
 					'card_style'	=>$key
 				);
 				
-				if(count($batch)%200000==0)
+				if($run%200000==0)
 				{
 					$this->caribbeanPoker_Model->addProbabilityTable($batch);
 					unset($batch);
@@ -208,7 +208,7 @@ class MainPage extends CI_Controller {
 			// echo "<br>";
 			if($run%20000 ==0)
 			{
-				echo "D";
+				// echo "D";
 				$this->caribbeanPoker_Model->savebatch($batch);
 				// $batch =array();
 				unset($batch);

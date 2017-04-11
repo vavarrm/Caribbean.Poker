@@ -9,7 +9,7 @@
 		{
 			parent::__construct();
 			$this->zeor_number =1000000000;
-			$this->version =0;
+			$this->version =1;
 			// $CI =& get_instance();
 			// $CI->load->model('caribbeanPoker_Model');
 			// $this->ProbabilityTable = $CI->caribbeanPoker_Model->getProbabilityTable();

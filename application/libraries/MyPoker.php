@@ -7,7 +7,7 @@
 		{
 
 			$this->card = array();
-			$this->cardNums = 1;
+			$this->cardNums = 2;
 			$this->suit = array(
 				's',
 				'h',
@@ -62,7 +62,7 @@
 		//基本洗牌法
 		public function basicShuffle()
 		{
-			// shuffle($this->card);
+			shuffle($this->card);
 			// shuffle($this->card);
 			// srand(mktime()*rand(0,9999));
 			// shuffle($this->card);
@@ -70,18 +70,18 @@
 			// shuffle($this->card);
 			// rsort($this->card);
 			// var_dump($this->card);
-			// for($i=1;$i<=3;$i++)
-			// {
-				// $a = array_slice($this->card, 0 , 26);
-				// $b = array_slice($this->card, 26 , 26);
-				// $temp = array();
-				// foreach($a as $key => $value)
-				// {
-					// $temp[] = $a[$key];
-					// $temp[] = $b[$key];
-				// }
-					// $this->card = $temp;
-			// }
+			for($i=1;$i<=3;$i++)
+			{
+				$a = array_slice($this->card, 0 , 26);
+				$b = array_slice($this->card, 26 , 26);
+				$temp = array();
+				foreach($a as $key => $value)
+				{
+					$temp[] = $a[$key];
+					$temp[] = $b[$key];
+				}
+					$this->card = $temp;
+			}
 			// shuffle($this->card);
 			// rsort($this->card);
 			// var_dump($this->card);

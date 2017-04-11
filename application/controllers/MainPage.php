@@ -32,9 +32,6 @@ class MainPage extends CI_Controller {
 	
 	public function initProbabilityTable()
 	{
-		
-
-	
 		$this->load->model('caribbeanPoker_Model');
 		$pr = array(
 			'sf'	=>15/15,
@@ -47,6 +44,9 @@ class MainPage extends CI_Controller {
 			'op'	=>422600/15,
 			'hc'	=>501215/15,
 		);
+		
+		// foreach($pr)
+		// return ;
 		$this->caribbeanPoker_Model->delProbabilityTable();
 		foreach($pr as $key=> $value)
 		{	
@@ -208,6 +208,7 @@ class MainPage extends CI_Controller {
 			// echo "<br>";
 			if($run%20000 ==0)
 			{
+				echo "D";
 				$this->caribbeanPoker_Model->savebatch($batch);
 				// $batch =array();
 				unset($batch);

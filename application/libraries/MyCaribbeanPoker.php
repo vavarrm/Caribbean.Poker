@@ -10,7 +10,9 @@
 			parent::__construct();
 			$this->zeor_number =1000000000;
 			$this->version =0;
-
+			// $CI =& get_instance();
+			// $CI->load->model('caribbeanPoker_Model');
+			// $this->ProbabilityTable = $CI->caribbeanPoker_Model->getProbabilityTable();
 		}
 		
 		public function start()
@@ -20,8 +22,10 @@
 			// $output = array();
 			$this->initCard($this->cardNums);
 			$player_card = $this->getRandStyle();
-			$player_card ='tp';
-			$banker_card ='hc';
+			$banker_card = $this->getRandStyle();
+			// echo $banker_card;
+			// $player_card ='fk';
+			// $banker_card ='hc';
 			$output['player'] =$this->makeCard($player_card);
 			$output['banker'] = $this->makeCard($banker_card);
 			// $this->basicShuffle();
@@ -36,6 +40,8 @@
 				// $card = array_shift( $this->card);
 				// $output['banker'][] = $card;
 			// }
+			// var_dump($output['player']);
+			// var_dump($output['banker']);
 			// var_dump($this->card);
 			return $output;
 		}
@@ -48,10 +54,8 @@
 				case 'hc':
 					while($stop == false)
 					{	
-						//
 						$output = array();
 						$rand_keys = array_rand($this->card, 5);
-						// var_dump($rand_keys);
 						for($i=0 ;$i<=4 ;$i++)
 						{
 							$output[$rand_keys[$i]] =$this->card[$rand_keys[$i]];
@@ -66,12 +70,8 @@
 							}else{
 								foreach($output as $key =>$value)
 								{
-				
 									$this->card[$key] = $value;
 								}
-								$output = array();
-
-								
 							}
 						}
 					}
@@ -106,6 +106,7 @@
 					}
 				break;
 				case 'tp':
+					$output = array();
 					$addPointAry =$this->addPointAry;
 					$two_pairs_value = array_rand($addPointAry , 2);
 					$temp_value  = array();
@@ -132,9 +133,6 @@
 						$output[] =$temp_pool[0];
 						$output[] =$temp_pool[1];
 						unset($addPointAry[$value]);
-						
-				
-			
 					}
 
 			
@@ -147,7 +145,261 @@
 					// echo 
 				break;
 				case 'tk':
-					echo "D";
+					$output = array();
+					$addPointAry =$this->addPointAry;
+					$suit = $this->suit;
+					$three_set_value = array_rand($addPointAry , 1);
+					unset($addPointAry[$three_set_value]);
+					$rand_three_color = array_rand($suit  , 3);
+					foreach($rand_three_color as $value)
+					{
+						
+						$card =$this->suit[$value].'_'.$three_set_value;
+					
+						$output[]=$card;
+						$unset_index = array_keys($this->card, $card);
+						unset($this->card[$unset_index[0]]);
+					}
+					
+					$kick_ary  = array_rand($addPointAry , 2);
+					foreach($kick_ary  as $value)
+					{
+						$rand_three_kick_color = array_rand($suit  , 1);
+						$card =$this->suit[$rand_three_kick_color].'_'.$value;
+						$output[]=$card;
+						$unset_index = array_keys($this->card, $card);
+						unset($this->card[$unset_index[0]]);
+					}
+				break;
+				case 'st':
+					$output = array();
+					$suit =array();
+					$suit = array_merge($suit, $this->suit);
+					$suit = array_merge($suit, $this->suit);
+					$suit = array_merge($suit, $this->suit);
+					$suit = array_merge($suit, $this->suit);
+					$straight_color_ary = array_rand($suit , 5);
+					$mid = rand(1,13);
+					$mid = rand(1,13);
+
+					$mid_start = $mid ;
+			
+					if($mid_start== 1)
+					{
+						$updown = rand(1,2);
+					}elseif ( $mid_start >1 && $mid_start <5){
+						$updown  =1;
+					}elseif ( $mid_start >=5 && $mid_start<=10){
+						$updown = rand(1,2);
+					}else{
+						$updown  =2;
+					}
+						
+				
+					foreach( $straight_color_ary as $value)
+					{
+						$color = $suit[$value];
+	
+						if($updown == 1)
+						{
+							if($mid >13)
+							{
+								$card_value = 1;
+							}else{
+								$card_value = $mid;
+							}
+							
+							$mid++;
+						}else
+						{
+							if($mid <=0)
+							{
+								$card_value = 13 +$mid;
+							}else
+							{
+								$card_value = $mid;
+							}
+							$mid--;
+						}
+						
+						$card = $color."_".$card_value;
+						$output[] =$card;
+						$unset_index = array_keys($this->card, $card);
+						unset($this->card[$unset_index[0]]);
+					}
+				break;
+				case 'fl':
+					$output = array();
+					$suit = $this->suit;
+					$straight_color_key = array_rand($suit , 1);
+					$color = $suit[$straight_color_key];
+					
+					while($stop == false)
+					{	
+						$output = array();
+						$rand_keys = array_rand($this->card, 5);
+						for($i=0 ;$i<=4 ;$i++)
+						{
+							$output[$rand_keys[$i]] =$this->card[$rand_keys[$i]];
+							
+						}
+						if(count($output) == 5 )
+						{	
+							$card_info = $this->getCardPoint($output);
+							if($card_info['type'] =="High card")
+							{
+								$stop = true;
+								$temp = array();
+								foreach($output as $key =>$value)
+								{
+									$explode = explode('_',$value);
+									// echo $explode[1];
+									$card =$color.'_'.$explode[1];
+									// echo $card ;
+									$temp[] = $card ;
+									$unset_index = array_keys($this->card, $card);
+									unset($this->card[$unset_index[0]]);
+								}
+								$output = $temp;
+							}else{
+								foreach($output as $key =>$value)
+								{
+									// echo $value;
+									$this->card[$key] = $value;
+								
+								}
+								$output =array();
+							}
+						}
+					}
+				break;
+				case 'fh':
+					$output = array();
+					$addPointAry =$this->addPointAry;
+					$fullhouse_three_value = array_rand($addPointAry , 1);
+					unset($addPointAry[$fullhouse_three_value]);
+					$temp_value  = array();
+					$suit  = $this->suit;
+					$rand_color_ary = array_rand($suit  , 3);
+					// var_dump($rand_color_ary);
+					
+					$temp_pool = array();
+						
+					$color1 =  $this->suit[$rand_color_ary[0]];
+					$color2 =  $this->suit[$rand_color_ary[1]];
+					$color3 =  $this->suit[$rand_color_ary[2]];
+					
+					// echo $color1;
+					// echo $color2;
+					// echo $color3;
+					
+					$temp_pool[] =$color1.'_'.$fullhouse_three_value;
+					$temp_pool[] =$color2.'_'.$fullhouse_three_value;
+					$temp_pool[] =$color3.'_'.$fullhouse_three_value;
+					
+					$unset1 = array_keys($this->card, $temp_pool[0]);
+					$unset2 = array_keys($this->card, $temp_pool[1]);
+					$unset3 = array_keys($this->card, $temp_pool[2]);
+					unset($this->card[$unset1[0]]);
+					unset($this->card[$unset2[0]]);
+					unset($this->card[$unset3[0]]);
+					
+					$output[] =$temp_pool[0];
+					$output[] =$temp_pool[1];
+					$output[] =$temp_pool[2];
+						
+				
+					
+			
+					$fullhouse_pairs = array_rand($addPointAry  , 1);
+					$fullhouse_pairs_color = array_rand($this->suit  , 2);
+					
+					$card4 = $suit[$fullhouse_pairs_color[0]].'_'.$fullhouse_pairs;
+					$card5 = $suit[$fullhouse_pairs_color[1]].'_'.$fullhouse_pairs;
+					$output[]=$card4;
+					$output[]=$card5;
+					$unset_index = array_keys($this->card, $card4);
+					unset($this->card[$unset_index[0]]);
+					
+					$unset_index = array_keys($this->card, $card4);
+					unset($this->card[$unset_index[0]]);
+				break;
+				case 'fk':
+					$output = array();
+					$addPointAry =$this->addPointAry;
+					$four_king_value = array_rand($addPointAry , 1);
+					unset($addPointAry[$four_king_value]);
+					$suit  = $this->suit;
+				
+					shuffle($suit );
+					// var_dump($suit);
+					foreach($suit as $value)
+					{
+						$card = $value.'_'.$four_king_value;
+						$output[]=$card;
+						$unset_index = array_keys($this->card, $card);
+						unset($this->card[$unset_index[0]]);
+					}
+					
+					$four_king_kick_index = array_rand($this->card , 1);
+					$card = $this->card [$four_king_kick_index ];
+					$output[]=$card;
+					
+				break;
+				case 'sf':
+					$output = array();
+					$suit =$this->suit;
+					$straight_color_key = array_rand($suit , 1);
+					$color = $suit[$straight_color_key];
+
+					$mid = rand(1,13);
+
+					$mid_start = $mid ;
+			
+					if($mid_start== 1)
+					{
+						$updown = rand(1,2);
+					}elseif ( $mid_start >1 && $mid_start <5){
+						$updown  =1;
+					}elseif ( $mid_start >=5 && $mid_start<=10){
+						$updown = rand(1,2);
+					}else{
+						$updown  =2;
+					}
+						
+				
+					for( $i =0 ;$i<=4 ; $i++)
+					{
+
+	
+						if($updown == 1)
+						{
+							if($mid >13)
+							{
+								$card_value = 1;
+							}else{
+								$card_value = $mid;
+							}
+							
+							$mid++;
+						}else
+						{
+							if($mid <=0)
+							{
+								$card_value = 13 +$mid;
+							}else
+							{
+								$card_value = $mid;
+							}
+							$mid--;
+						}
+						
+						$card = $color."_".$card_value;
+						$output[] =$card;
+						$unset_index = array_keys($this->card, $card);
+						unset($this->card[$unset_index[0]]);
+					}
+					// var_dump($output);
 				break;
 			}
 			return $output;
@@ -155,6 +407,12 @@
 		
 		public function getRandStyle()
 		{
+			$CI =& get_instance();
+			$CI->load->model('caribbeanPoker_Model');
+			$row = $CI->caribbeanPoker_Model->getRandStyle();
+			// var_dump($row );
+			$card_style = $row['card_style'];
+			return $card_style;
 			// $max =  count($this->rand_table)-1;
 			// shuffle($this->rand_table);
 			// $key = rand(0,$max);

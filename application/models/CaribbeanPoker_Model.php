@@ -13,6 +13,23 @@
 			$this->db->insert_batch('caribbean_poker_income', $ary); 
 		}
 		
+		public function getProbabilityTable()
+		{
+			$sql="SELECT `card_style` FROM `probability_table` ORDER BY `card_style` LIMIT 1";
+			$query = $this->db->query($sql);
+			$row = $query->row();
+			$query->free_result();
+			return $row;
+		}		
+		
+		public function getRandStyle()
+		{
+			$sql="SELECT `card_style` FROM `probability_table` ORDER BY RAND() LIMIT 1";
+			$query = $this->db->query($sql);
+			$row = $query->row_array();
+			$query->free_result();
+			return $row;
+		}
 		
 		public function addProbabilityTable($ary)
 		{

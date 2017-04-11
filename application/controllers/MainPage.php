@@ -37,15 +37,15 @@ class MainPage extends CI_Controller {
 	
 		$this->load->model('caribbeanPoker_Model');
 		$pr = array(
-			'sf'	=>15,
-			'fk'	=>240,
-			'fh'	=>1440,
-			'fl'	=>1970,
-			'st'	=>3920,
-			'tk'	=>21100,
-			'tp'	=>47500,
-			'op'	=>422600,
-			'hc'	=>501215,
+			'sf'	=>15/15,
+			'fk'	=>240/15,
+			'fh'	=>1440/15,
+			'fl'	=>1970/15,
+			'st'	=>3920/15,
+			'tk'	=>21100/15,
+			'tp'	=>47500/15,
+			'op'	=>422600/15,
+			'hc'	=>501215/15,
 		);
 		$this->caribbeanPoker_Model->delProbabilityTable();
 		foreach($pr as $key=> $value)

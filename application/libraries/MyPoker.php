@@ -59,32 +59,21 @@
 		
 		}
 		
-		//基本洗牌法
+		//基本洗牌法对插法
 		public function basicShuffle()
 		{
-			shuffle($this->card);
-			// shuffle($this->card);
-			// srand(mktime()*rand(0,9999));
-			// shuffle($this->card);
-			// shuffle($this->card);
-			// shuffle($this->card);
-			// rsort($this->card);
+			srand((double)microtime()*1000000); 
+			$card_nums = count($this->card);
 			// var_dump($this->card);
-			for($i=1;$i<=3;$i++)
+			for($i=0;$i<$card_nums*3 ;$i++)
 			{
-				$a = array_slice($this->card, 0 , 26);
-				$b = array_slice($this->card, 26 , 26);
-				$temp = array();
-				foreach($a as $key => $value)
-				{
-					$temp[] = $a[$key];
-					$temp[] = $b[$key];
-				}
-					$this->card = $temp;
+				$a = rand(0,$card_nums-1);
+				$b =rand(0,$card_nums-1);
+				$temp =$this->card[$a];
+				$this->card[$a] = $this->card[$b];
+				$this->card[$b]= $temp;
+				
 			}
-			// shuffle($this->card);
-			// rsort($this->card);
-			// var_dump($this->card);
 		}
 		
 		

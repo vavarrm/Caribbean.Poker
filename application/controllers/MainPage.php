@@ -30,6 +30,47 @@ class MainPage extends CI_Controller {
 		$this->load->model('caribbeanPoker_Model');
 	}
 	
+	public function test($rum = 1)
+	{
+		for($j=0;$j<=$rum  ;$j++)
+		{
+			$this->game->initCard();
+			$this->game->basicShuffle();
+			$output = array();
+			
+			$card_index = 0;
+			$next_card_index = $card_index+5;
+
+			for($i=$card_index ; $i< $next_card_index ; $i++)
+			{
+				$output['player'][] = $this->game->card[$card_index];
+
+				$card_index++;
+			}
+			
+			$next_card_index+=5;
+			for($i=$card_index ; $i< $next_card_index ; $i++)
+			{
+				$output['banker'][] = $this->game->card[$card_index];
+
+				$card_index++;
+			}
+			
+			// var_dump($output);
+			
+			$player_point = $this->game->getCardPoint($output['player']);
+			$banker_point = $this->game->getCardPoint($output['banker']);
+			
+			$total_player_table[$player_point['type']]++;
+			$total_banker_table[$banker_point['type']]++;
+		}
+		
+		// var_dump($this->game->card);
+		
+		var_dump($total_player_table);
+		var_dump($total_banker_table);
+	}
+	
 	public function initProbabilityTable()
 	{
 		$this->load->model('caribbeanPoker_Model');

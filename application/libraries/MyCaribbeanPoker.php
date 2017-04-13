@@ -24,7 +24,7 @@
 			$player_card = $this->getRandStyle();
 			$banker_card = $this->getRandStyle();
 			// echo $banker_card;
-			$player_card ='st';
+			// $player_card ='st';
 			// $banker_card ='hc';
 			$output['player'] =$this->makeCard($player_card);
 			$output['banker'] = $this->makeCard($banker_card);

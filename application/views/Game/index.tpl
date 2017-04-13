@@ -13,11 +13,15 @@
 	<div class="container">
 		<div class="wrap">
 			<div id="ontopDiv">
-				<div id="winner">chip&nbsp;&nbsp;<span>0</span></div>
-				<div id="winner">winlose&nbsp;&nbsp;<span>0</span></div>
-				<div id="winner">bet&nbsp;&nbsp;<span>1</span></div>
-				<div id="winner">double&nbsp;&nbsp;<span>0</span></div>
-				<div id="winner">winner&nbsp;&nbsp;<span></span></div>
+				<div id="info_chip">chip&nbsp;&nbsp;<span>0</span></div>
+				<div id="info_odds">odds&nbsp;&nbsp;<span>1</span></div>
+				<div id="info_winlose">winlose&nbsp;&nbsp;<span>0</span></div>
+				<div id="info_winlose_total">winlose_total&nbsp;&nbsp;<span>0</span></div>
+				<div>bet&nbsp;&nbsp;<span>1</span></div>
+				<div id="info_bet_total">bet_total&nbsp;&nbsp;<span>1</span></div>
+				<div>double&nbsp;&nbsp;<span>2</span></div>
+				<div id="info_double_total">double_total&nbsp;&nbsp;<span>0</span></div>
+				<div id="info_winner">winner&nbsp;&nbsp;<span></span></div>
 			</div>
 			<div class="playingCards fourColours rotateHand">
 				<h1>banker</h1>

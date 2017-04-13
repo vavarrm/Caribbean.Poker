@@ -1,11 +1,14 @@
 $(function() {
 	newGame();
 	var bet =1;
+	var bet_total =1;
+	var double_total =0;
 	var zeor_number = 1000000000;
 	var odds = 1;
 	var winlose = 0;
+	var winlose_total = 0;
 	var winner ="";
-	var chip = 0;
+	var chip = 1000;
 	var total_bet = 0;
 	var total_double = 0;
 	var rank_arr = ['0', 'a', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q' ,'k'];
@@ -20,6 +23,8 @@ $(function() {
 		"double" : 0,
 		"winner" : '',
 	};
+	doBet();
+	upinfo();
 	$('#fold').removeAttr("disabled");
 	$('#new').bind('click', function(e)
 	{
@@ -91,40 +96,47 @@ $(function() {
 		odds =1;
 		var banker_point = parseInt(banker_card_info.point);
 		var player_point = parseInt(player_card_info.point);
-
 		if(banker_point>=141304032)
 		{
 			if(player_point > banker_point)
 			{
 				odds  = getOdds(player_point);
-				winlose += bet*2*odds+bet;
+				winlose = bet*2*odds+bet;
 				winner ="player";
+				chip+=1;
+				chip+=winlose;
 			}else if(player_point < banker_point)
 			{
-				winlose += bet*-2+bet*-1;
+				winlose = (bet*-2)+(bet*-1);
 				winner ="banker";
+				chip-=2;
 			}else{
-				winlose +=0;
-				chip+=bet;
+				winlose =0;
+				chip+=3;
 				winner ="tip";
 			}
 		}else{
-			winlose += 0;
+			winlose = 0;
 			winner ="push";
+			chip+=1;
+			// chip;
 		}
 		
-		winner_info['bet'] +=1;
-		winner_info['double'] +=2;
-		winner_info['winlose'] =winlose;
-		winner_info['odds'] =odds;
-		winner_info['winner'] =winner;
-		winner_info['chip'] =chip+winlose;
+		winlose_total+=winlose;
+		double_total +=2;
 		upinfo();
 	}
 	
 	function upinfo()
 	{
-		console.log(winner_info);
+		
+		$('#info_winner span').text(winner);
+		$('#info_chip span').text(chip);
+		$('#info_bet_total span').text(bet_total);
+		$('#info_double_total span').text(double_total);
+		$('#info_winlose_total span').text(winlose_total);
+		$('#info_winlose span').text(winlose);
+		$('#info_odds span').text(odds);
 	}
 	
 	function bankerOpen()
@@ -150,7 +162,11 @@ $(function() {
 	function  newGame()
 	{
 		var res ,suit, suit_img, rank, rank_str ;
+		winner ='';
+		// chip -=1;
 		doBet();
+		bet_total +=1;
+		upinfo();
 		$.ajax({
 			type: 'POST',
 			url: '/GameAPI/start',

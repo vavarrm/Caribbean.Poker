@@ -24,8 +24,20 @@
 		
 		public function getRandStyle()
 		{
-			$sql="SELECT `card_style` FROM `probability_table` ORDER BY RAND() LIMIT 1";
+			
+			$sql ="SELECT COUNT(*) total FROM `probability_table`";
 			$query = $this->db->query($sql);
+			$row = $query->row_array();
+			$max= $row['total'] -1;
+			srand((double)microtime()*1000000); 
+			$index = rand(0,$max);
+			$sql="SELECT `card_style` FROM `probability_table`  LIMIT  ?, 1";
+			// $sql="SELECT `card_style` FROM `probability_table` ORDER BY RAND()  LIMIT  1";
+			$bind = array(
+				$index 
+			);
+			
+			$query = $this->db->query($sql, $bind);
 			$row = $query->row_array();
 			$query->free_result();
 			return $row;

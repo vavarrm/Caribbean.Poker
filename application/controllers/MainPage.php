@@ -30,6 +30,12 @@ class MainPage extends CI_Controller {
 		$this->load->model('caribbeanPoker_Model');
 	}
 	
+	
+	public function game()
+	{
+		
+	}
+	
 	public function test($rum = 1)
 	{
 		for($j=0;$j<=$rum  ;$j++)
@@ -164,26 +170,13 @@ class MainPage extends CI_Controller {
 			// echo $this->game->zeor_number;
 			if($player_point['point'] >=$playPoint)
 			{
-				// echo "<br>";
 				$double = $bet*2;
-				// echo "Double :".$double;
-				// echo "D";
-				// var_dump($banker_point);
-				// echo "<br>";
-				// echo 1*$this->game->zeor_number;
-				
-				// if( $banker_point['point'] >=1*$this->game->zeor_number || $banker_point['AK'] >= 2)
 				if( $banker_point['point'] >=141304032)
 				{
-					// echo "<br>";
-					// echo "D";
-					
 					if($player_point['point'] > $banker_point['point'])
 					{
 						$winner  ="player";
 						$odds = $this->game->getOdds($player_point['point']);
-						// echo $odds."<br>";
-						// echo $double;
 						$winlose = $double*$odds+$bet;
 					}elseif($player_point['point'] < $banker_point['point'])
 					{
@@ -191,24 +184,19 @@ class MainPage extends CI_Controller {
 						$winlose =-1*($double+$bet);
 					}else{
 						$winner  ="tie";
-						// echo "d";
 						$winlose=0;
 					}
 				}else
 				{
 					$winner  ="player";
 					$double = 0;
-					$winlose = $bet ;
+					$winlose = 0 ;
 				}
 			}else
 			{
 				$winner  ="banker";
 				$winlose = -1*$bet;
 			}
-			// echo "<br>";
-			// echo "winner:".$winner;
-			// echo "<br>";
-			// echo "winlose :".$winlose;
 			$save =array(
 				'banker' =>array(
 					'hand_card' =>join(':',$output['banker']) ,

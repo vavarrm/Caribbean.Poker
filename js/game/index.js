@@ -1,7 +1,7 @@
 $(function() {
 	newGame();
 	var bet =1;
-	var bet_total =1;
+	var bet_total =0;
 	var double_total =0;
 	var zeor_number = 1000000000;
 	var odds = 1;
@@ -38,7 +38,12 @@ $(function() {
 	$('#fold').bind('click', function(e)
 	{
 		e.preventDefault();
-		newGame();
+		winlose ='-1';
+		$(this).attr("disabled" ,true);
+		winlose_total=winlose_total - bet;
+		winner ="banker";
+		$('#new').show();
+		upinfo();
 	})
 	
 	$('#double').bind('click' , function(e){
@@ -103,7 +108,7 @@ $(function() {
 				odds  = getOdds(player_point);
 				winlose = bet*2*odds+bet;
 				winner ="player";
-				chip+=1;
+				chip+=3;
 				chip+=winlose;
 			}else if(player_point < banker_point)
 			{
@@ -116,9 +121,9 @@ $(function() {
 				winner ="tip";
 			}
 		}else{
-			winlose = 0;
-			winner ="push";
-			chip+=1;
+			winlose = bet;
+			winner ="player";
+			chip+=bet+bet;
 			// chip;
 		}
 		

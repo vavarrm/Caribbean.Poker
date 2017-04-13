@@ -190,7 +190,7 @@ class MainPage extends CI_Controller {
 				{
 					$winner  ="player";
 					$double = 0;
-					$winlose = 0 ;
+					$winlose = $bet ;
 				}
 			}else
 			{

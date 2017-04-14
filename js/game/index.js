@@ -5,6 +5,7 @@ $(function() {
 	var fold = 0;
 	var game_tpye = 1;
 	var double_total =0;
+	var player = $('select[name=player]').val();
 	var zeor_number = 1000000000;
 	var odds = 1;
 	var winlose = 0;
@@ -25,6 +26,8 @@ $(function() {
 		"double" : 0,
 		"winner" : '',
 	};
+	var play_error= "0";
+	var play_error_msg ="";
 	// doBet();
 	upinfo();
 
@@ -44,8 +47,7 @@ $(function() {
 			return false;
 		}
 		$(this).addClass("disabled");
-		$('#fold').removeAttr("disabled").show();
-		$('#double').removeClass("disabled");
+
 		newGame();
 	})
 	
@@ -62,6 +64,7 @@ $(function() {
 		fold = 1;
 		getWinner();
 		upinfo();
+		saveEnd();
 	})
 	
 	$('#double').bind('click' , function(e){
@@ -70,22 +73,142 @@ $(function() {
 		{
 			return false;
 		}
+		var banker_open_card = $('.banker_card .open .rank').text();
+
+		play_error_msg ="";
+		play_error ="0";
+		var player_hand_card_3 = $('.player_card li .rank').eq(2).text();
+		var player_hand_card_4 = $('.player_card li .rank').eq(3).text();
+		var player_hand_card_5 = $('.player_card li .rank').eq(4).text();
+		switch(game_type)
+		{
+			case '2':
+			if(banker_open_card =="K" || banker_open_card =="A")
+			{
+				if (player_card_info.point < 141311000)
+				{
+					play_error = "1";
+					var play_error_msg = "banker open A K your card must more AKJXX";
+				}
+				
+			}
+			else if(
+				player_hand_card_3 =="Q" ||
+				player_hand_card_4 =="Q" ||
+				player_hand_card_5 =="Q" 
+			)
+			{
+				if(player_card_info.point <zeor_number)
+				{
+					var temp = new Array(3);
+					temp[0] = player_hand_card_3;
+					temp[1] = player_hand_card_4;
+					temp[2] =player_hand_card_5;
+					
+					$.each(temp, function(i,e){
+						if(e =='J')
+						{
+							temp[i] =11;
+						}
+						else if(e =='Q')
+						{
+							temp[i] =12;
+						}else
+						{
+							temp[i]  = parseInt(e);
+						}
+					});
+					temp.sort(sortNumber);
+					
+					if(banker_open_card  =="J")
+					{
+						banker_open_card  =11;
+					}
+
+					if(banker_open_card >  temp[1])
+					{
+			
+						play_error = "3";
+						play_error_msg = "your high card is AKQ and  four card must big more open card";
+					}
+				}
+			}
+			else{
+			
+				if(
+					player_hand_card_3 !=  banker_open_card &&
+					player_hand_card_4 !=  banker_open_card &&
+					player_hand_card_5 !=  banker_open_card &&
+					player_card_info.point < zeor_number
+				)
+				{
+					play_error = "2";
+					play_error_msg = "banker open Q~2 your card XYZ must same same open card";
+				}
+			}
+			break;
+		}
 		$(this).addClass("disabled");
+		if(play_error_msg !="" && play_error!="")
+		{
+			$('#decision_error').show();
+			$('#decision_error span').text(play_error_msg);
+		}
 		$('#bet').removeClass("disabled");
 		$('#fold').attr("disabled" , true).hide();
 
 		doDouble();
 	})
 	
+	
+	function sortNumber(a,b) {
+		return a - b;
+	}
+	
 	function doDouble()
 	{
 		bankerOpen();
 		getWinner();	
+		saveEnd();
 	}
 	
 	function doBet()
 	{
 		chip -=1;
+	}
+	
+	function saveEnd()
+	{
+		var postjson ={
+			winner :winner,
+			winlose :winlose,
+			odds :odds,
+			winner :winner,
+			bet :bet,
+			bet_double : (bet*2),
+			player : player,
+			player_point :player_card_info.point,
+			player_hand_card :player_card_info.handcard,
+			player_hand_card_name :player_card_info.type,
+			banker_point :banker_card_info.point,
+			banker_hand_card :banker_card_info.handcard,
+			banker_hand_card_name :banker_card_info.type,
+			game_type:game_type,
+			play_error	:play_error
+		};
+		
+		// console.log(player_card_info);
+		
+		$.ajax({
+			type: 'POST',
+			url: '/GameAPI/newGameLog',
+			data: JSON.stringify(postjson) , // or JSON.stringify ({name: 'jonas'}),
+			success: function(data) {
+				
+			},
+			contentType: "application/json",
+			dataType: 'json'
+		});
 	}
 	
 	function getOdds(point)
@@ -141,7 +264,6 @@ $(function() {
 			double_total +=2;
 		}else if(fold==1){
 			winlose =-1*bet;
-			// chip-=1;
 			winner ="banker";
 		}else
 		{
@@ -149,7 +271,6 @@ $(function() {
 			winner ="player";
 			chip+=bet+bet;
 			double_total +=2;
-			// chip;
 		}
 		
 		winlose_total+=winlose;
@@ -166,6 +287,7 @@ $(function() {
 		$('#info_winlose_total span').text(winlose_total);
 		$('#info_winlose span').text(winlose);
 		$('#info_odds span').text(odds);
+		
 	}
 	
 	function bankerOpen()
@@ -194,14 +316,10 @@ $(function() {
 		winner ='';
 		fold = 0;
 		game_type = $('input[name=game_type]:checked').val();
-		// chip -=1;
-		doBet();
-		bet_total +=1;
-		upinfo();
 		$.ajax({
 			type: 'POST',
 			url: '/GameAPI/start',
-			data: '{"player":"tom","game_type":"'+game_type+'"}', // or JSON.stringify ({name: 'jonas'}),
+			data: '{"player":"'+player+'","game_type":"'+game_type+'"}', // or JSON.stringify ({name: 'jonas'}),
 			success: function(data) {
 				if(data["body"]["status"] !='100')
 				{
@@ -209,6 +327,14 @@ $(function() {
 					alert(errormsg );
 					return false;
 				}
+				doBet();
+				bet_total +=1;
+				upinfo();
+				$('#decision_error').hide();
+				$('#decision_error span').text('');
+				$('#fold').removeAttr("disabled").show();
+				$('#double').removeClass("disabled");
+				
 				banker_card_info = data["body"]['card']['banker'];
 				player_card_info = data["body"]['card']['player'];
 				$('.player_card .card').attr('class' ,'card');

@@ -9,18 +9,42 @@ class GameAPI extends CI_Controller {
 		$this->load->library(array(
 			'MyCaribbeanPoker'	=> 'game'
 		));
-		$this->load->model('caribbeanPoker_Model');
+		$this->load->model('CaribbeanPoker_Model');
+		$this->load->model('Game_Model');
 		$this->status_ary = array(
 			'100'	=>'OK',
 			'001'	=>'input empty',
 			'901'	=>'hard card is null',
 		);
+		
 		$this->request = json_decode(trim(file_get_contents('php://input'), 'r'), true);
 	}
 	
+	public function newGameLog()
+	{
+		try 
+		{
+			// echo trim(file_get_contents('php://input'), 'r');
+			$this->Game_Model->add($this->request);
+			
+			// var_dump();
+			$status ='100';
+			$body['status'] = $status;
+			$body['msg'] = $this->status_ary[$status];
+		}
+		catch (Exception $e) 
+		{
+			$status =  $e->getMessage();
+			$body['status'] = $status;
+			$body['msg']  = $this->status_ary[$status];
+		} finally {
+			
+			$this->output($body);
+		}
+	}
 	public function start()
 	{
-		
+		// sleep(5);
 		$player = $this->request['player'];
 		$game_type = $this->request['game_type'];
 		$body =array();

@@ -12,7 +12,7 @@
 <body>
 	<div class="container">
 		<div class="wrap">
-			<div id="ontopDiv">
+			<div id="leftDiv">
 				<div id="info_chip">chip&nbsp;&nbsp;<span>0</span></div>
 				<div id="info_winlose_total">winlose_total&nbsp;&nbsp;<span>0</span></div>
 				<hr>
@@ -24,12 +24,19 @@
 				<hr>
 				<div id="info_bet_total">bet_total&nbsp;&nbsp;<span>1</span></div>
 				<div id="info_double_total">double_total&nbsp;&nbsp;<span>0</span></div>
-			</div>
-			<div id="leftDiv">
-				 <input type="radio" name="game_type" value="1" checked>default<br>
-				 <input type="radio" name="game_type" value="2" >have AK<br>
+				<input type="radio" name="game_type" value="1" checked>default<br>
+				<input type="radio" name="game_type" value="2" >have AK<br>
+				<hr>
+				<span>player:</span>
+				<select name="player">
+					<option value="tom">tom</option>
+					<option value="tryion">tryion</option>
+				</select>
 			</div>
 			<div class="playingCards fourColours rotateHand">
+				<div class="error hidden" id="decision_error" >
+					<span></span>
+				</div>
 				<h1>banker</h1>
 				<ul class="table banker_card">
 					<div class="hand">

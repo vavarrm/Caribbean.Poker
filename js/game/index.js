@@ -149,13 +149,15 @@ $(function() {
 			break;
 		}
 		$(this).addClass("disabled");
+		$('#bet').removeClass("disabled");
+		$('#fold').attr("disabled" , true).hide();
 		if(play_error_msg !="" && play_error!="")
 		{
 			$('#decision_error').show();
 			$('#decision_error span').text(play_error_msg);
+			// return false;
 		}
-		$('#bet').removeClass("disabled");
-		$('#fold').attr("disabled" , true).hide();
+		
 
 		doDouble();
 	})

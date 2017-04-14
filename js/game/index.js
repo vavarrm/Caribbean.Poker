@@ -1,7 +1,8 @@
 $(function() {
-	newGame();
+	// newGame();
 	var bet =1;
 	var bet_total =0;
+	var fold = 0;
 	var double_total =0;
 	var zeor_number = 1000000000;
 	var odds = 1;
@@ -23,9 +24,9 @@ $(function() {
 		"double" : 0,
 		"winner" : '',
 	};
-	doBet();
+	// doBet();
 	upinfo();
-	$('#fold').removeAttr("disabled");
+
 	$('#new').bind('click', function(e)
 	{
 		e.preventDefault();
@@ -35,14 +36,24 @@ $(function() {
 		$('#fold').removeAttr("disabled");
 	})
 	
+	$('#bet').bind('click', function(e){
+		e.preventDefault();
+		$(this).addClass("disabled");
+		$('#fold').removeAttr("disabled");
+		$('#double').removeClass("disabled");
+		newGame();
+	})
+	
 	$('#fold').bind('click', function(e)
 	{
 		e.preventDefault();
 		winlose ='-1';
 		$(this).attr("disabled" ,true);
-		winlose_total=winlose_total - bet;
-		winner ="banker";
-		$('#new').show();
+		$('#bet').removeClass("disabled");
+		$('#fold').attr("disabled");
+		$('#double').addClass("disabled");
+		fold = 1;
+		getWinner();
 		upinfo();
 	})
 	
@@ -53,16 +64,16 @@ $(function() {
 			return false;
 		}
 		$(this).addClass("disabled");
+		$('#bet').removeClass("disabled");
 		$('#fold').attr("disabled" , true);
-		$('#new').show();
+
 		doDouble();
 	})
 	
 	function doDouble()
 	{
 		bankerOpen();
-		getWinner();
-		
+		getWinner();	
 	}
 	
 	function doBet()
@@ -101,14 +112,14 @@ $(function() {
 		odds =1;
 		var banker_point = parseInt(banker_card_info.point);
 		var player_point = parseInt(player_card_info.point);
-		if(banker_point>=141304032)
+		if(banker_point>=141304032 && fold == 0)//莊家比牌
 		{
 			if(player_point > banker_point)
 			{
 				odds  = getOdds(player_point);
 				winlose = bet*2*odds+bet;
 				winner ="player";
-				chip+=3;
+				chip+=1;
 				chip+=winlose;
 			}else if(player_point < banker_point)
 			{
@@ -120,15 +131,21 @@ $(function() {
 				chip+=3;
 				winner ="tip";
 			}
-		}else{
+			double_total +=2;
+		}else if(fold==1){
+			winlose =-1*bet;
+			// chip-=1;
+			winner ="banker";
+		}else
+		{
 			winlose = bet;
 			winner ="player";
 			chip+=bet+bet;
+			double_total +=2;
 			// chip;
 		}
 		
 		winlose_total+=winlose;
-		double_total +=2;
 		upinfo();
 	}
 	
@@ -168,6 +185,7 @@ $(function() {
 	{
 		var res ,suit, suit_img, rank, rank_str ;
 		winner ='';
+		fold = 0;
 		// chip -=1;
 		doBet();
 		bet_total +=1;

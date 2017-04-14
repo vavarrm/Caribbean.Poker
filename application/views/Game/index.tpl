@@ -14,45 +14,47 @@
 		<div class="wrap">
 			<div id="ontopDiv">
 				<div id="info_chip">chip&nbsp;&nbsp;<span>0</span></div>
+				<div id="info_winlose_total">winlose_total&nbsp;&nbsp;<span>0</span></div>
+				<hr>
+				<div>bet&nbsp;&nbsp;<span>1</span></div>
+				<div>double&nbsp;&nbsp;<span>2</span></div>
 				<div id="info_odds">odds&nbsp;&nbsp;<span>1</span></div>
 				<div id="info_winlose">winlose&nbsp;&nbsp;<span>0</span></div>
-				<div id="info_winlose_total">winlose_total&nbsp;&nbsp;<span>0</span></div>
-				<div>bet&nbsp;&nbsp;<span>1</span></div>
-				<div id="info_bet_total">bet_total&nbsp;&nbsp;<span>1</span></div>
-				<div>double&nbsp;&nbsp;<span>2</span></div>
-				<div id="info_double_total">double_total&nbsp;&nbsp;<span>0</span></div>
 				<div id="info_winner">winner&nbsp;&nbsp;<span></span></div>
+				<hr>
+				<div id="info_bet_total">bet_total&nbsp;&nbsp;<span>1</span></div>
+				<div id="info_double_total">double_total&nbsp;&nbsp;<span>0</span></div>
 			</div>
 			<div class="playingCards fourColours rotateHand">
 				<h1>banker</h1>
 				<ul class="table banker_card">
 					<div class="hand">
 						<li>
-							<div class="card" href="#">
+							<div class="card back" href="#">
 								<span class="rank"></span>
 								<span class="suit"></span>
 							</div>
 						</li>
 						<li>
-							<div class="card" href="#">
+							<div class="card back" href="#">
 								<span class="rank"></span>
 								<span class="suit"></span>
 							</div>
 						</li>
 						<li>
-							<div class="card" href="#">
+							<div class="card back" href="#">
 								<span class="rank"></span>
 								<span class="suit"></span>
 							</div>
 						</li>
 						<li>
-							<div class="card" href="#">
+							<div class="card back" href="#">
 								<span class="rank"></span>
 								<span class="suit"></span>
 							</div>
 						</li>
 						<li>
-							<div class="card open">
+							<div class="card open back">
 								<span class="rank"></span>
 								<span class="suit"></span>
 							</div>
@@ -64,31 +66,31 @@
 				<ul class="table player_card">
 					<div class="open hand">
 						<li>
-							<div class="card rank-q hearts open" href="#">
+							<div class="card open back" href="#">
 								<span class="rank"></span>
 								<span class="suit"></span>
 							</div>
 						</li>
 						<li>
-							<div class="card open" href="#">
-								<span class="rank">2</span>
-								<span class="suit"></span>
-							</div>
-						</li>
-						<li>
-							<div class="card open" href="#">
+							<div class="card open back" href="#">
 								<span class="rank"></span>
 								<span class="suit"></span>
 							</div>
 						</li>
 						<li>
-							<div class="card open" href="#">
+							<div class="card open back" href="#">
 								<span class="rank"></span>
 								<span class="suit"></span>
 							</div>
 						</li>
 						<li>
-							<div class="card open">
+							<div class="card open back" href="#">
+								<span class="rank"></span>
+								<span class="suit"></span>
+							</div>
+						</li>
+						<li>
+							<div class="card open back">
 								<span class="rank"></span>
 								<span class="suit"></span>
 							</div>
@@ -97,15 +99,15 @@
 				</ul>
 				<div class="clear"></div>
 			</div>
-			<div class="fish black disabled">
+			<div class="fish blue" id="bet">
 				<div>1</div>
 			</div>
-			<div class="fish orange" id="double" >
+			<div class="fish orange disabled" id="double" >
 				<div>2</div>
 			</div>
 			<div class="clear"></div>
 			<button id="new" class="hidden">new</button>
-			<button id="fold">Fold</button>
+			<button id="fold" disabled="disabled">Fold</button>
 		</div>
 	</div>
 </body>

@@ -15,35 +15,57 @@
 			// $this->ProbabilityTable = $CI->caribbeanPoker_Model->getProbabilityTable();
 		}
 		
-		public function start()
+		public function start($type=1)
 		{
-			
-			// echo 	$player_card;
-			// $output = array();
 			$this->initCard($this->cardNums);
-			$player_card = $this->getRandStyle();
-			$banker_card = $this->getRandStyle();
-			// echo $banker_card;
-			// $player_card ='st';
-			// $banker_card ='op';
-			$output['player'] =$this->makeCard($player_card);
-			$output['banker'] = $this->makeCard($banker_card);
-			// $this->basicShuffle();
-			// for($i=1 ;$i<=5;$i++)
-			// {
-				// $card = array_shift( $this->card);
-				// $output['player'][] = $card;
-			// }
 			
-			// for($i=1 ;$i<=5;$i++)
-			// {
-				// $card = array_shift( $this->card);
-				// $output['banker'][] = $card;
-			// }
-			// var_dump($output['player']);
-			// var_dump($output['banker']);
-			// var_dump($this->card);
+			// echo $type;
+			switch($type)
+			{
+				case 1:
+				$player_card = $this->getRandStyle();
+				$banker_card = $this->getRandStyle();
+				$output['player'] =$this->makeCard($player_card);
+				$output['banker'] = $this->makeCard($banker_card);
+				break;
+				case 2:
+					$this->basicShuffle();
+					$output['player']  = $this->makeAKcard();
+					for($i=0;$i<5;$i++)
+					{
+						$output['banker'][] = array_shift($this->card);
+					}
+				break;
+			}
+			
+					
 			return $output;
+		}
+		
+		public function makeAKcard()
+		{
+			$output = array();
+			$suit_index = array_rand($this->suit, 1);
+			$suit = $this->suit[$suit_index];
+			$card =$suit.'_1';
+			$output[] =$card;
+			$del_index = array_keys($this->card,  $card);
+			unset($this->card[$del_index[0]]);
+			
+			$suit_index = array_rand($this->suit, 1);
+			$suit = $this->suit[$suit_index];
+			$card =$suit.'_13';
+			$output[] =$card;
+			$del_index = array_keys($this->card,  $card);
+			unset($this->card[$del_index[0]]);
+
+			
+			$output[] = array_shift($this->card);
+			$output[] = array_shift($this->card);
+			$output[] = array_shift($this->card);
+				
+			return $output;
+			// echo $suit;
 		}
 		
 		public function makeCard($style)
@@ -416,13 +438,8 @@
 			$CI =& get_instance();
 			$CI->load->model('caribbeanPoker_Model');
 			$row = $CI->caribbeanPoker_Model->getRandStyle();
-			// var_dump($row );
 			$card_style = $row['card_style'];
 			return $card_style;
-			// $max =  count($this->rand_table)-1;
-			// shuffle($this->rand_table);
-			// $key = rand(0,$max);
-			// return $this->rand_table[$key];
 		}
 		
 		public function getOdds($point)
@@ -567,15 +584,6 @@
 			{
 				$point = 5*$this->zeor_number;
 				
-				// if(in_array('1', $number))
-				// {
-					// $flush_max = $cardAry[1];
-					// $add = $addPointAry[1];
-				// }else{
-					// $flush_max = $cardAry[$number_max];
-					// $add = $addPointAry[$number_max];
-				// }
-				// $point+=$add;
 				
 				if($number[0] =='1')
 				{

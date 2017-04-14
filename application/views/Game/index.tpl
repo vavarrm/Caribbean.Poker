@@ -25,6 +25,10 @@
 				<div id="info_bet_total">bet_total&nbsp;&nbsp;<span>1</span></div>
 				<div id="info_double_total">double_total&nbsp;&nbsp;<span>0</span></div>
 			</div>
+			<div id="leftDiv">
+				 <input type="radio" name="game_type" value="1" checked>default<br>
+				 <input type="radio" name="game_type" value="2" >have AK<br>
+			</div>
 			<div class="playingCards fourColours rotateHand">
 				<h1>banker</h1>
 				<ul class="table banker_card">
@@ -107,7 +111,7 @@
 			</div>
 			<div class="clear"></div>
 			<button id="new" class="hidden">new</button>
-			<button id="fold" disabled="disabled">Fold</button>
+			<button id="fold" class="hidden" disabled="disabled">Fold</button>
 		</div>
 	</div>
 </body>

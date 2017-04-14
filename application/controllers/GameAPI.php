@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class GameAPI extends CI_Controller {
+	public $request;
 	public function __construct()
 	{
 		parent::__construct();
@@ -14,12 +15,14 @@ class GameAPI extends CI_Controller {
 			'001'	=>'input empty',
 			'901'	=>'hard card is null',
 		);
+		$this->request = json_decode(trim(file_get_contents('php://input'), 'r'), true);
 	}
 	
 	public function start()
 	{
-		$post_json = json_decode(trim(file_get_contents('php://input'), 'r'), true);
-		$player = $post_json['player'];
+		
+		$player = $this->request['player'];
+		$game_type = $this->request['game_type'];
 		$body =array();
 		
 		try 
@@ -30,7 +33,7 @@ class GameAPI extends CI_Controller {
 				throw new Exception('001');
 			}
 			
-			$card = $this->game->start();
+			$card = $this->game->start($game_type);
 			
 			if(empty($card))
 			{
@@ -52,6 +55,7 @@ class GameAPI extends CI_Controller {
 			$body['status'] = $status;
 			$body['msg']  = $this->status_ary[$status];
 		} finally {
+			$body['other_cards_num'] = count($this->game->card);
 			$this->output($body);
 		}
 	}
@@ -60,7 +64,8 @@ class GameAPI extends CI_Controller {
 		$output =array(
 			'body'	=>$body,
 			'head'	=>array(
-				time =>date('Y-m-d H:i:s')
+				'time' =>date('Y-m-d H:i:s'),
+				'request'	=>$this->request
 			),
 		);
 		header('Content-Type: application/json');

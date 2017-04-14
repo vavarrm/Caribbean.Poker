@@ -7,7 +7,7 @@
 		{
 
 			$this->card = array();
-			$this->cardNums = 2;
+			$this->cardNums = 1;
 			$this->suit = array(
 				's',
 				'h',
@@ -64,7 +64,7 @@
 		{
 			srand((double)microtime()*1000000); 
 			$card_nums = count($this->card);
-			// var_dump($this->card);
+	
 			for($i=0;$i<$card_nums*3 ;$i++)
 			{
 				$a = rand(0,$card_nums-1);

@@ -3,6 +3,7 @@ $(function() {
 	var bet =1;
 	var bet_total =0;
 	var fold = 0;
+	var game_tpye = 1;
 	var double_total =0;
 	var zeor_number = 1000000000;
 	var odds = 1;
@@ -38,8 +39,12 @@ $(function() {
 	
 	$('#bet').bind('click', function(e){
 		e.preventDefault();
+		if($(this).hasClass("disabled"))
+		{
+			return false;
+		}
 		$(this).addClass("disabled");
-		$('#fold').removeAttr("disabled");
+		$('#fold').removeAttr("disabled").show();
 		$('#double').removeClass("disabled");
 		newGame();
 	})
@@ -50,8 +55,10 @@ $(function() {
 		winlose ='-1';
 		$(this).attr("disabled" ,true);
 		$('#bet').removeClass("disabled");
-		$('#fold').attr("disabled");
+		$(this).attr("disabled");
+		$(this).hide();
 		$('#double').addClass("disabled");
+
 		fold = 1;
 		getWinner();
 		upinfo();
@@ -65,7 +72,7 @@ $(function() {
 		}
 		$(this).addClass("disabled");
 		$('#bet').removeClass("disabled");
-		$('#fold').attr("disabled" , true);
+		$('#fold').attr("disabled" , true).hide();
 
 		doDouble();
 	})
@@ -186,6 +193,7 @@ $(function() {
 		var res ,suit, suit_img, rank, rank_str ;
 		winner ='';
 		fold = 0;
+		game_type = $('input[name=game_type]:checked').val();
 		// chip -=1;
 		doBet();
 		bet_total +=1;
@@ -193,11 +201,16 @@ $(function() {
 		$.ajax({
 			type: 'POST',
 			url: '/GameAPI/start',
-			data: '{"player":"tom"}', // or JSON.stringify ({name: 'jonas'}),
+			data: '{"player":"tom","game_type":"'+game_type+'"}', // or JSON.stringify ({name: 'jonas'}),
 			success: function(data) {
+				if(data["body"]["status"] !='100')
+				{
+					var errormsg = data["body"]["msg"];
+					alert(errormsg );
+					return false;
+				}
 				banker_card_info = data["body"]['card']['banker'];
 				player_card_info = data["body"]['card']['player'];
-
 				$('.player_card .card').attr('class' ,'card');
 				$('.player_card .card').addClass('back');
 				$.each(player_card_info['handcard'], function( index, value ) {
